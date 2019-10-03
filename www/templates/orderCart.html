@@ -1,0 +1,162 @@
+<ion-view title="Cart" id="page3">
+  <ion-content padding="true" class="has-header">
+
+  
+    <div
+      ng-repeat="order in orders | filter:orderStatusIs('InProgress')"
+      class="list card"
+    >
+      <ion-item class="item-avatar item-icon-right" href="tel:Phone Number">
+        <img src="img/kGFfewlhTeCRA4DFJSMU_profile.jpg">
+        <h2>Chef Name</h2>
+        <p>Phone Number</p>
+        <i class="icon ion-ios-telephone-outline"></i>
+      </ion-item>
+      <div class="item item-body" id="ordersAndStatus-list-item-container13">
+        <div id="ordersAndStatus-markdown16" class="show-list-numbers-and-dots">
+          <p style="margin-top:0px;color:#000000;">
+            <strong>Description</strong>
+          </p>
+
+          <p style="color:#000000;">{{order.meal.mealDescription}}</p>
+        </div>
+      </div>
+      <ion-slides disable-side-menu-drag="" options="{'loop': true}" slider="slider8" delegate-handle="slider8" id="ordersAndStatus-slider8" style="width:100%;height:200px;">
+        <ion-slide-page
+            ng-repeat="picture in order.meal.attributes.pictures"
+            style="background:url(&quot;{{picture}}&quot;)
+                no-repeat center;background-size:cover;"
+        ></ion-slide-page>
+      </ion-slides>
+      <ion-item class="item-icon-left assertive" id="ordersAndStatus-list-item32">
+        <i class="icon ion-android-alert"></i>Contains
+        <span class="item-note">
+          <span ng-repeat="allergen in order.meal.allergies">
+            {{allergen}}&nbsp
+          </span>
+        </span>
+      </ion-item>
+      <ion-item class="item-icon-left" id="ordersAndStatus-list-item33">
+        <i class="icon ion-clock"></i>
+        Pick-up Time:
+        <span class="item-note">
+            {{order.pickupTime | date:'yyyy-MM-dd hh:mm:ssa'}}
+        </span>
+      </ion-item>
+      <ion-item ng-show="order.requestedPickupTime"
+          class="item-icon-left balanced" id="ordersAndStatus-list-item34"
+      >
+        <i class="icon ion-clock"></i>New Requested Time
+        <span class="item-note">
+            {{order.requestedPickupTime | date:'yyyy-MM-dd hh:mm:ssa'}}
+        </span>
+      </ion-item>
+    </div>
+
+
+    <div
+      ng-repeat="order in orders | filter:orderStatusIs('Completed')"
+      class="list card" id="ordersAndStatus-card29"
+    >
+      <ion-item class="item-avatar item-icon-right" id="ordersAndStatus-list-item47" href="tel:Phone Number">
+        <img src="img/kGFfewlhTeCRA4DFJSMU_profile.jpg">
+        <h2>Chef Name</h2>
+        <p>Phone Number</p>
+        <i class="icon ion-ios-telephone-outline"></i>
+      </ion-item>
+      <div class="item item-body" id="ordersAndStatus-list-item-container16">
+        <div id="ordersAndStatus-markdown19" class="show-list-numbers-and-dots">
+          <p style="margin-top:0px;color:#000000;">
+            <strong>Description</strong>
+          </p>
+
+          <p style="color:#000000;">{{order.meal.mealDescription}}</p>
+        </div>
+      </div>
+      <ion-slides disable-side-menu-drag="" options="{'loop': true}" slider="slider9" delegate-handle="slider9" id="ordersAndStatus-slider9" style="width:100%;height:200px;">
+        <ion-slide-page id="ordersAndStatus-slide225" style="background:url(&quot;img/U6b4AhOFTpeKK3uiIDdH_pizza.jpg&quot;) no-repeat center;background-size:cover;"></ion-slide-page>
+        <ion-slide-page id="ordersAndStatus-slide226" style="background:url(&quot;img/1oGBQkNmRy6iyz96wref_Kartoffel_pizza_with_border.jpg&quot;) no-repeat center;background-size:cover;"></ion-slide-page>
+        <ion-slide-page id="ordersAndStatus-slide227" style="background:url(&quot;img/CcKflOkgRNeJh0UIRwJY_pizza.jpg&quot;) no-repeat center;background-size:cover;"></ion-slide-page>
+      </ion-slides>
+      <ion-item class="item-icon-left assertive" id="ordersAndStatus-list-item48">
+        <i class="icon ion-android-alert"></i>Contains
+        <span class="item-note">
+          <span ng-repeat="allergen in order.meal.allergies">
+            {{allergen}}&nbsp
+          </span>
+        </span>
+      </ion-item>
+      <ion-item class="item-icon-left" id="ordersAndStatus-list-item49">
+        <i class="icon ion-clock"></i>Pick-up Time
+        <span class="item-note">
+          {{order.pickupTime | date:'yyyy-MM-dd hh:mm:ssa'}}
+        </span>
+      </ion-item>
+      <ion-item class="item-icon-left item-icon-right balanced" id="ordersAndStatus-list-item50">
+        <i class="icon ion-android-star"></i>Ratings
+        <span class="item-note">{{order.rating | number:1}}/5</span>
+      </ion-item>
+    </div>
+
+
+
+    <div id="orderCart-container2">
+      <ion-list id="orderCart-list7">
+        <ion-item class="item-divider" id="orderCart-list-item-divider5"> Open Orders</ion-item>
+      </ion-list>
+    </div>
+    <div class="list card" id="orderCart-card211">
+      <ion-item class="item-icon-left" id="orderCart-list-item50" ui-sref="tabsController.createYourMeal">
+        <i class="icon ion-android-restaurant"></i>Chicken Sandwich
+        <span class="item-note">$4</span>
+      </ion-item>
+      <div class="item item-body" id="orderCart-list-item-container17">
+        <div id="orderCart-markdown19" class="show-list-numbers-and-dots">
+          <p style="margin-top:0px;color:#000000;">Grilled chicked on whole wheat bread with avocados
+          </p>
+        </div>
+      </div>
+      <ion-item class="item-icon-left energized" id="orderCart-list-item51">
+        <i class="icon ion-android-time"></i>Pick-up Time: 8pm
+        <span class="item-note">Online</span>
+      </ion-item>
+    </div>
+    <div id="orderCart-container3">
+      <ion-list id="orderCart-list11">
+        <ion-item class="item-divider" id="orderCart-list-item-divider11"> Accepted Orders</ion-item>
+      </ion-list>
+    </div>
+    <!--<div class="list card" id="orderCart-card212">
+      <ion-item class="item-avatar item-icon-right dark" id="orderCart-list-item54" href="tel:Phone Number">
+        <h2dark>User Name
+          <p>Phone Number</p>
+          <i class="icon ion-ios-checkmark-outline"></i>
+        </h2dark>
+      </ion-item>
+      <ion-item class="item-icon-left dark" id="orderCart-list-item52" ui-sref="tabsController.createYourMeal">
+        <i class="icon ion-android-restaurant"></i>Meal Name
+        <span class="item-note">$15</span>
+      </ion-item>
+      <div class="item item-body" id="orderCart-list-item-container18">
+        <div id="orderCart-markdown20" class="show-list-numbers-and-dots">
+          <p style="margin-top:0px;color:#000000;">Some friendly
+            <strong>markdown</strong>
+          </p>
+        </div>
+      </div>
+      <ion-item class="item-icon-left assertive" id="orderCart-list-item77">
+        <i class="icon ion-android-alert"></i>Contains
+        <span class="item-note">Nuts, Dairy</span>
+      </ion-item>
+      <ion-item class="item-icon-left energized" id="orderCart-list-item53">
+        <i class="icon ion-android-time"></i>Pick-up Time
+        <span class="item-note">Status</span>
+      </ion-item>
+      <ion-item class="item-icon-left balanced" id="orderCart-list-item55">
+        <i class="icon ion-android-time"></i>New Requested Time
+        <span class="item-note">Confirm</span>
+      </ion-item>
+    </div>-->
+
+  </ion-content>
+</ion-view>

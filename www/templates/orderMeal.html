@@ -1,0 +1,79 @@
+<ion-view title="Order Meal" id="page9">
+  <ion-content padding="true" class="has-header">
+    <ion-slides disable-side-menu-drag="" options="{'loop': true}" slider="slider7" delegate-handle="slider7" id="orderMeal-slider7" style="width:100%;height:200px;">
+      <ion-slide-page
+        ng-repeat="picture in meal.attributes.pictures"
+        style="background:url(&quot;{{picture}}&quot;) no-repeat center;background-size:cover;"
+      ></ion-slide-page>
+    </ion-slides>
+    <div class="list card" id="orderMeal-card24">
+      <ion-item class="item-avatar" id="orderMeal-list-item16">
+        <img src="img/yE6zLeBS2yJWeBqrkB8M_profile.jpg">
+        <h2>{{meal.chef.attributes.name}}</h2>
+        <p>{{meal.mealName}}</p>
+      </ion-item>
+      <div class="item item-body" id="orderMeal-list-item-container9">
+        <div id="orderMeal-markdown9" class="show-list-numbers-and-dots">
+          <p style="margin-top:0px;color:#000000;">
+            <strong>Description</strong>
+          </p>
+
+          <p style="color:#000000;">{{meal.mealDescription}}</p>
+        </div>
+        <div id="orderMeal-markdown10" class="show-list-numbers-and-dots">
+          <p style="color:#000000;">
+            <strong>Ingredients</strong>
+          </p>
+
+          <p style="color:#000000;">
+            <span ng-repeat="ingredient in meal.attributes.mealIngredients">
+              {{ingredient}}&nbsp
+            </span>
+          </p>
+        </div>
+      </div>
+      <ion-item class="item-divider" id="orderMeal-list-item-divider1"> </ion-item>
+      <ion-item class="item-icon-left" id="orderMeal-list-item17">
+        <i class="icon ion-ios-flask-outline"></i>
+        Serving Size: {{meal.attributes.feedsHowMany}} individuals
+      </ion-item>
+      <ion-item class="item-icon-left balanced" id="orderMeal-list-item18">
+        <i class="icon ion-cash"></i>Price: ${{centToDollarString(meal.price)}}</ion-item>
+      <ion-item class="item-icon-left energized" id="orderMeal-list-item19" ui-sref="tabsController.orderMeal.editPickingUpTime({mealId: {{meal.mealId}}})">
+        <i class="icon ion-clock"></i>
+        Pick-up Time: {{meal.pickupTime | date:'yyyy-MM-dd hh:mm:ssa'}}
+        <ion-option-button class="button-positive">New Time</ion-option-button>
+      </ion-item>
+      <ion-item class="item-divider" id="orderMeal-list-item-divider2"> </ion-item>
+      <ion-item class="item-icon-left assertive" id="orderMeal-list-item20">
+        <i class="icon ion-android-alert"></i>Contains
+        <span class="item-note">
+          <span ng-repeat="allergen in meal.allergies">
+            {{allergen}}&nbsp
+          </span>
+        </span>
+      </ion-item>
+      <form ng-submit="placeOrder()" id="orderMeal-form3" class="list">
+        <label class="item item-input" id="orderMeal-textarea1" name="notetochef">
+          <span class="input-label">Note to Chef</span>
+          <textarea
+            ng-model="message"
+            placeholder="Write a message or special instruction to chef..."
+          ></textarea>
+        </label>
+        <div ng-hide="isOrdered" id="orderMeal-button-bar1" class="button-bar">
+          <button type="submit" id="orderMeal-button4" class="button button-balanced  button-block">Order</a>
+        </div>
+        <ion-item ng-show="isOrdered && !response.error">
+            Order Placed
+        </ion-item>
+        <ion-item ng-show="response.error === 'NoneAvailable'">
+            No more of this meal left
+        </ion-item>
+        <ion-item ng-show="response.error">
+            Could Not Order
+        </ion-item>
+      </form>
+    </div>
+  </ion-content>
+</ion-view>

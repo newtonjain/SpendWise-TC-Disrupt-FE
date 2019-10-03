@@ -1,0 +1,29 @@
+<ion-view title="Settings" id="page7">
+  <ion-content padding="true" class="has-header">
+    <form id="settings-form5" class="list">
+      <ion-item class="item-divider" id="settings-list-item-divider10"> Distance</ion-item>
+      <ion-item class="range range-positive" id="settings-range1">Range
+        <input type="range" value="50" min="0" max="10" step="1" ng-model="distance">{{distance}}km
+      </ion-item>
+      <div class="spacer" style="width: 300px; height: 18px;"></div>
+      <ion-item class="item-divider" id="settings-list-item-divider11"> Price Range</ion-item>
+      <ion-item class="range range-positive" id="settings-range2">Range
+        <input type="range" value="50" min="0" max="100" step="1" ng-model="price">Up to ${{price}}
+      </ion-item>
+      <div class="spacer" style="width: 300px; height: 18px;"></div>
+      <label class="item item-select" id="settings-select3">
+        <span class="input-label">Cuisine</span>
+        <select>
+          <option>All</option>
+          <option>Indian</option>
+          <option>Thai</option>
+          <option>Chinese</option>
+          <option>Italian</option>
+        </select>
+      </label>
+      <div class="spacer" style="width: 300px; height: 18px;"></div>
+      <ion-toggle toggle-class="toggle-positive" id="settings-toggle1">Pick-up</ion-toggle>
+      <ion-toggle toggle-class="toggle-positive" id="settings-toggle2">Delivery</ion-toggle>
+    </form>
+  </ion-content>
+</ion-view>

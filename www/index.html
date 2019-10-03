@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <link href="css/ionic.app.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style type="text/css">
+      .platform-ios .manual-ios-statusbar-padding{
+        padding-top:20px;
+      }
+      .manual-remove-top-padding{
+        padding-top:0px;
+      }
+      .manual-remove-top-padding .scroll{
+        padding-top:0px !important;
+      }
+      ion-list.manual-list-fullwidth div.list, .list.card.manual-card-fullwidth {
+        margin-left:-10px;
+        margin-right:-10px;
+      }
+      ion-list.manual-list-fullwidth div.list > .item, .list.card.manual-card-fullwidth > .item {
+        border-radius:0px;
+        border-left:0px;
+        border-right: 0px;
+      }
+      .show-list-numbers-and-dots ul{
+        list-style-type: disc;
+        padding-left:40px;
+      }
+      .show-list-numbers-and-dots ol{
+        list-style-type: decimal;
+        padding-left:40px;
+      }
+    </style>
+
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBhL_tsurGpKm-pstlePx1pnuR6TaZdDug",
+    authDomain: "soundsearch-386c6.firebaseapp.com",
+    databaseURL: "https://soundsearch-386c6.firebaseio.com",
+    projectId: "soundsearch-386c6",
+    storageBucket: "",
+    messagingSenderId: "59436876945",
+    appId: "1:59436876945:web:097fb6f56f31b4ef"
+};
+  firebase.initializeApp(config);
+</script>
+
+
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/routes.js"></script>
+
+
+    <script src="js/directives.js"></script>
+
+    <script src="js/services.js"></script>
+    <script src="js/mock-backend-service.js"></script>
+    <script src="js/http-backend-service.js"></script>
+    <script src="js/backend-service.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/lodash/4.15.0/lodash.min.js"></script>
+
+    <script src="js/angular-simple-logger.js"></script>
+
+    <script src="js/angular-google-maps.min.js"></script>
+
+    <script src="js/googlemaps.init.js"></script>
+
+    <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
+
+    <script src="lib/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="lib/ng-file-upload/dist/ng-file-upload-shim.js"></script> 
+    <script src="lib/ng-file-upload/dist/ng-file-upload.js"></script>   
+
+    <script src='lib/progress-js/src/progress.js'></script>
+    <link rel='stylesheet' href='lib/progress-js/src/progressjs.css'/>
+
+
+    <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
+
+    <script src="vendors/base/vendor.bundle.base.js"></script>
+    <script src="vendors/chart.js/Chart.min.js"></script>
+    <script src="vendors/progressbar.js/progressbar.min.js"></script>
+		<script src="vendors/chartjs-plugin-datalabels/chartjs-plugin-datalabels.js"></script>
+		<script src="vendors/justgage/raphael-2.1.4.min.js"></script>
+    <script src="vendors/justgage/justgage.js"></script>
+
+
+  </head>
+  <body ng-app="app" animation="slide-left-right-ios7">
+  <div>
+  <ion-side-menus ng-controller="chefyCtrl" enable-menu-with-back-views="false" data-componentid="side-menu21">
+    <ion-side-menu-content drag-content="false">
+      <ion-nav-bar class="bar-stable">
+        <ion-nav-back-button></ion-nav-back-button>
+        <ion-nav-buttons side="left">
+          <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+        </ion-nav-buttons>
+      </ion-nav-bar>
+      <ion-nav-view></ion-nav-view>
+    </ion-side-menu-content>
+    <ion-side-menu side="left" id="side-menu21">
+      <ion-header-bar class="bar-stable">
+        <div class="title">Menu</div>
+      </ion-header-bar>
+      <ion-content ng-controller="menuCtrl" padding="false" class="side-menu-left has-header ">
+        <ion-list id="menu-list1" data-componentid="list1">
+          <ion-item ng-show="user.type === &apos;customer&apos;" class="item-icon-left" id="menu-list-item9" ui-sref="chefsNearyby" menu-close="" data-componentid="list-item9">
+            <i class="icon ion-disc"></i>Search
+          </ion-item>
+          <ion-item class="item-icon-left" id="menu-list-item11" ui-sref="profile" menu-close="" data-componentid="list-item11">
+            <i class="icon ion-ios-contact-outline"></i>Profile</ion-item>
+          <ion-item class="item-icon-left" ng-click="logout()" menu-close="" data-componentid="list-item11">
+            Logout</ion-item>
+          <!--<ion-item
+            ng-show="isDebugging"
+            ng-click="toggleUserType()"
+            class="item-icon-left" menu-close="" data-componentid="list-item11"
+          >
+            Toggle User Type
+          </ion-item>-->
+        </ion-list>
+      </ion-content>
+    </ion-side-menu>
+  </ion-side-menus>
+</div>
+  </body>
+</html>

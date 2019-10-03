@@ -1,0 +1,33 @@
+<ion-view title="Users Nearby" hide-back-button="true" id="page7">
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button button-icon icon ion-ios-body" ui-sref="tabsController.usersNearby"></button>
+  </ion-nav-buttons>
+  <ion-content padding="true" class="has-header">
+    <creator-map-component options="{}" marker="true" location="Madison Capital" zoom="12" style="display:block;position:relative;width:100%;height:300px;">
+      <ui-gmap-google-map ng-if="map.center" center="map.center" zoom="map.zoom" options="map.options">
+        <ui-gmap-marker coords="map.marker.coords" idkey="map.marker.id" options="map.marker.options"></ui-gmap-marker>
+      </ui-gmap-google-map>
+    </creator-map-component>
+    <div class="list card" id="usersNearby2-card29">
+      <ion-item class="item-avatar item-icon-right" id="usersNearby2-list-item42">
+        <img src="img/Dh2ZmNySTmtNnPL2ubAy_12356692_10153256369867546_2569264182024613135_o.jpg">
+        <h2>User Name</h2>
+        <p>Mean Name</p>
+        <i class="icon ion-cash"></i>
+      </ion-item>
+      <div class="item item-body" id="usersNearby2-list-item-container13">
+        <div id="usersNearby2-markdown15" class="show-list-numbers-and-dots">
+          <p style="margin-top:0px;color:#000000;">
+            <strong>Meal Description</strong>
+          </p>
+
+          <p style="color:#000000;">Rice with vegetables.</p>
+        </div>
+      </div>
+      <ion-item class="item-icon-left item-icon-right" id="usersNearby2-list-item43" ui-sref="tabsController.requestedMeal">
+        <i class="icon ion-android-locate"></i>2 km
+        <i class="icon ion-android-arrow-dropright"></i>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-view>

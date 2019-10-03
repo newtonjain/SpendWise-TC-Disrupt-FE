@@ -1,0 +1,53 @@
+<ion-view  id="page4">
+  <ion-content padding="true" class="has-header">
+    <form id="createYourMeal-form8" class="list">
+      <label class="item item-input" id="createYourMeal-input8" name="mealname" >
+        <span class="input-label">Meal Name</span>
+        <input ng-model="meal.mealName" type="text" placeholder="What would you like to cook today?">
+      </label>
+      <label class="item item-input" id="createYourMeal-textarea2" name="description">
+        <span class="input-label">Description</span>
+        <textarea ng-model="meal.mealDescription" placeholder=""></textarea>
+      </label>
+      <label class="item item-input" id="createYourMeal-textarea3" name="Ingredients">
+        <span class="input-label">Ingredients</span>
+        <textarea ng-model="meal.attributes.mealIngredients" placeholder="Ingredients"></textarea>
+      </label>
+      <ion-item class="item-divider" id="createYourMeal-list-item-divider3"> </ion-item>
+      <label class="item item-input" id="createYourMeal-input12" name="ServingSize">
+        <span class="input-label">Serving Size</span>
+        <input ng-model="meal.attributes.feedsHowMany" type="number" placeholder="Feeds 1 or 2 or 3?">
+      </label>
+      <label class="item item-input" id="createYourMeal-input10">
+        <span class="input-label">Price</span>
+        <input ng-model="price" type="number" placeholder="">
+      </label>
+      <label class="item item-input item-stacked-label" id="createYourMeal-input11" name="PickUpTime">
+        <span class="input-label">Pick Up Time</span>
+        <span ng-bind="displayTime(time)"></span>
+        <input ng-model="time" type="datetime-local" placeholder="Time Meal will be ready by">
+      </label>
+      <ion-item class="item-divider" id="createYourMeal-list-item-divider4"> </ion-item>
+      <label class="item item-select" id="createYourMeal-select2" name="Allergies">
+        <span class="input-label">Contains</span>
+        <div class="create-your-meal-allegies">
+          <div class="allergy" ng-repeat="allergy in mealAllergies" ng-click="removeAllergy(allergy)">{{allergy}}</div>
+        </div>
+        <select ng-model="selectedAllergy" ng-change="addAllergy(selectedAllergy)">
+          <option>Nuts</option>
+          <option>Dairy</option>
+          <option>Eggs</option>
+          <option>Shellfish</option>
+          <option>Wheat</option>
+          <option>Rice</option>
+          <option>Fruits</option>
+          <option>Soy</option>
+        </select>
+      </label>
+    </form>
+    <div id="createYourMeal-button-bar2" class="button-bar">
+      <a ng-click="submit()" id="createYourMeal-button10" style="border-radius:1px 1px 1px 1px;" class="button button-balanced  button-block">Post</a>
+    </div>
+    <span ng-show="isSubmitted">Posted</span>
+  </ion-content>
+</ion-view>

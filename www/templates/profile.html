@@ -1,0 +1,82 @@
+<ion-view title="Profile" id="page8">
+	<ion-nav-buttons side="right" class="has-header" ng-click="editing=true">
+	</ion-nav-buttons>
+
+	<ion-content padding="true" class="has-header">
+
+		<div ng-hide='editing'>
+			<div class="list card">
+				<h3 id="profile-heading1" style="color:#000000;text-align:center;">{{user.attributes.name}}</h3>
+				<div class="item item-body">
+					<img src="{{user.attributes.profilePictureUrl}}" class="headshot" />
+					<div class="spacer" style="width: 300px; height: 20px;"></div>
+					<ion-list id="profile-list7">
+						<ion-item class="item-icon-left" id="profile-list-item39">
+							<i class="icon ion-ios-telephone-outline"></i>Phone number
+
+							<span class="item-note">212-906-1274</span>
+						</ion-item>
+						<ion-item class="item-icon-left" id="profile-list-item40">
+							<i class="icon ion-ios-home-outline"></i>Address
+
+							<span class="item-note">566 LaGuardia Pl</span>
+						</ion-item>
+						<ion-item class="item-icon-left" id="profile-list-item41">
+							<i class="icon ion-android-alert"></i>Allergies
+
+							<span ng-repeat="allergy in user.attributes.allergies" class="item-note">{{allergy}}&nbsp;</span>
+						</ion-item>
+						<ion-item class="item-icon-left" id="profile-list-item41" ng-if="user.type == 'chef'">
+							<i class="icon ion-cash"></i>Earnings
+
+							<span class="item-note">$960&nbsp;</span>
+						</ion-item>
+						<ion-item class="item-icon-left" id="profile-list-item41" ng-if="user.type == 'chef'">
+							<i class="icon ion-star"></i>Ratings
+
+							<span class="item-note">4.9&nbsp;</span>
+						</ion-item>
+					</ion-list>
+					<center>
+						<button class="button button-stable icon ion-edit" ng-click="editing=true">
+            - Edit
+          </button>
+					</center>
+				</div>
+			</div>
+		</div>
+
+		<div ng-show="editing">
+			<div class="list card">
+				<div class="item item-divider">Edit Contact Information</div>
+				<div class="item item-body">
+					<div class="list-group-item">
+						<div class="form-group">
+              <p>
+                <label for="phone">phone:</label>
+                <input id="phone" class="form-control" type="text" ng-model="user.attributes.phonenumber">
+              </p>
+              <p>
+                <label for="address">Address:</label>
+                <input id="address" class="form-control" type="text" ng-model="user.attributes.address">
+              </p>
+              <p>
+                <label for="address">Allergies:</label>
+								<div class="allergies">
+									<div class="allergy" ng-repeat="allergy in allergies track by $index" ng-click="removeAllergy(allergy)">
+										{{allergy}}
+									</div>
+								</div>
+                <input id="address" class="form-control" type="text" placeholder="add an allergy.." ng-model="currentAllergy">
+								<button ion-button class="dark" ng-click="addAllergy(currentAllergy)">Add Allergy</button>
+              </p>
+            </div>
+            <center>
+              <button class="button button-balanced" ng-click="editing=false; save()">Save Changes</button>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
