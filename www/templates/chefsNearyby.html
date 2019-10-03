@@ -239,8 +239,21 @@
     </div>
 
 
-
-
+    <div class="row mt-4">
+      <div class="col-lg-8 card">
+    <div class="card-body">
+      <h4 class="card-title">Recommended</h4>
+      <div ng-repeat="business in alternativeBusiness" class="d-flex align-items-center pb-3 border-bottom">
+        <img class="img-sm rounded-circle" src="{{business.TemplateData.Image.URL}}" alt="profile">
+        <div class="ml-3">
+          <h6 class="mb-1">{{business.TemplateData.Title}}</h6>
+          <small class="text-muted mb-0"><i class="mdi mdi-map-marker mr-1"></i>{{business.TemplateData.BodyText}}</small>
+        </div>
+        <i class="mdi mdi-check-circle-outline font-weight-bold ml-auto px-1 py-1 text-info mdi-24px"></i>
+      </div>
+    </div>
+      </div>
+    </div>
 
       <!-- <div class="col-md-12 grid-margin stretch-card">
           <div class="card">

@@ -31,14 +31,13 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
     $scope.serverResponse = {};
     $scope.allFiles = {};
     $scope.errorAnnouncement = {};
+    $scope.alternativeBusiness = {}
     progressJs().setOption("theme", "green").start().autoIncrease(4, 500);
     console.log('here is the state Params', $stateParams.sessionId);
     $scope.sessionID = $stateParams.sessionId;
     if($stateParams.sessionId==null){
         $stateParams.sessionId = "NA"
     }
-
-
 
     var bestSellersData = {
         datasets: [{
@@ -94,7 +93,6 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
             options: bestSellersOptions
         });
     }
-
 
 
     var areaData = {
@@ -199,34 +197,18 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
     // headers: {'Content-Type': undefined, 'X-Session-Token': $stateParams.sessionId}
     // progressJs().start().autoIncrease(4, 500);
     var update = () => {
-        var endpoint = 'http://sbe.soundsearch.io';
-        
-        $http(
-            {
-               method: 'GET',
-               url: endpoint + '/getAllItems',
-               headers: {'X-Session-Token': 'b445f1f8-319c-40c5-a47b-e0d95e27ab6b'}
-            }).then(function success(response) {
-                console.log('here are the files ', response.data);
-                for (var i = 0; i< response.data.items.length; i++ ) {
-                    response.data.items[i].DateUploaded = (new Date(response.data.items[i].fileUploadDateMillis)).toString()
-                    console.log('here is the date uploaded', response.data.items[i])
-                }
-
-                $scope.allFiles = response.data;
-                $scope.files = $scope.allFiles;
-                progressJs().end();
-            }, function error(response) {
-               // called asynchronously if an error occurs
-               // or server returns response with an error status.
-               console.log ("Error occured while trying to fetch data", response);
-               $scope.errorAnnouncement.getallItems = "Error occured while fetching your files, please refresh the page. If the error occurs, please contact us for support."
-               progressJs().end();
-               return response;
-        });
         // var method = backend.getAllItems();
         // $scope.files = method.all();
         // console.log('here are the files ', $scope.files );
+
+
+        $http.get('https://spendwise-business-search.herokuapp.com/houndify-results?query="find%20cheap%20restaurants%20near%20me%20"')
+        .success(function (data, status) {
+            console.log('business search', data.AllResults[0].TemplateData.Items, JSON.stringify(status));
+            $scope.alternativeBusiness = data.AllResults[0].TemplateData.Items;
+            }).error(function (data, status) {
+            console.log('There was a problem posting your information' + JSON.stringify(data) + JSON.stringify(status));
+           })
 
     };
     notifier.addListener(update);
