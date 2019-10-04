@@ -18946,6 +18946,16 @@ code {
   height: 43px;
 }
 
+.img-sm2 {
+  width: 33px;
+  height: 33px;
+}
+
+.imageCenter {
+  position: relative;
+  top: 20%;
+}
+
 .img-xs {
   width: 37px;
   height: 37px;

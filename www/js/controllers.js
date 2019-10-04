@@ -193,7 +193,7 @@ function createLoanChart (data) {
             fill: true
           },
           {
-            label: 'Spendwise Debt',
+            label: 'Savewise Debt',
             data: reduced_liabilities_datalabels,
             borderColor: ['rgba(50,205,50, 0.5)'],
             backgroundColor: ['rgba(50,205,50, 0.5)'],
@@ -369,8 +369,8 @@ function createLoanChart (data) {
         }
         for(var i = data.daily_expenses.length; i< data.predictions.length; i++) {
             labels[i] = data.predictions[i].date;
-            datalabels[i] = data.predictions[i].amount 
-            spendwiseLabels[i] = data.predictions[i].amount*0.7
+            datalabels[i] = data.predictions[i].amount*1.3
+            spendwiseLabels[i] = data.predictions[i].amount*1.3*0.7
         }
 
         console.log('here are the labels', labels, datalabels )
@@ -378,7 +378,7 @@ function createLoanChart (data) {
         labels: labels,
         datasets: [
             {
-                label: 'With Spendwise',
+                label: 'With Savewise',
                 data: spendwiseLabels,
                 borderColor: ['rgba(255, 99, 132, 0.5)'],
                 backgroundColor: ['rgba(50,205,50, 0.5)'],
@@ -386,7 +386,7 @@ function createLoanChart (data) {
                 fill: true
               },
             {
-            label: 'Without SpendWise',
+            label: 'Without SaveWise',
             data: datalabels,
             borderColor: ['rgba(255, 99, 132, 0.5)'],
             backgroundColor: ['rgba(255,215,0, 0.5)'],
@@ -426,7 +426,8 @@ function createLoanChart (data) {
         var multiAreaChart = new Chart(multiAreaCanvas, {
           type: 'line',
           data: multiAreaData,
-          options: multiAreaOptions
+          options: multiAreaOptions,
+          lineAtIndex: [4]
         });
       }
 
@@ -457,18 +458,12 @@ function createLoanChart (data) {
         $scope.voiceRequest.end();
         // statusElt.innerText = "Stopped recording. Waiting for response...";
         console.log('stopped recording waiting for response');
-        document.getElementById("voiceIcon").className = "unmute big icon";
-        document.getElementById("textSearchButton").disabled = false;
-        document.getElementById("query").readOnly = false;
       });
 
       recorder.on('error', function(error) {
         $scope.voiceRequest.abort();
         // statusElt.innerText = "Error: " + error;
         console.log('got error', error);
-        document.getElementById("voiceIcon").className = "unmute big icon";
-        document.getElementById("textSearchButton").disabled = false;
-        document.getElementById("query").readOnly = false;
       });
       
 
@@ -536,8 +531,8 @@ function createLoanChart (data) {
         recorder.start();
 
         // statusElt.innerText = "Streaming voice request...";
-        document.getElementById("voiceIcon").className = "loading circle notched icon big";
-        document.getElementById("textSearchButton").disabled = true;
+        // document.getElementById("voiceIcon").className = "loading circle notched icon big";
+        // document.getElementById("textSearchButton").disabled = true;
         document.getElementById("query").readOnly = true;  
       }
 
@@ -628,7 +623,7 @@ function createLoanChart (data) {
 
     $scope.getLoanInfo = function() {
         
-        $http.get('http://34fbd6e3.ngrok.io/get_liability_details?transactions=3')
+        $http.get('http://99df5d2d.ngrok.io/get_liability_details?transactions=3')
         .success(function (data, status) {
             // console.log('1', data)
             $scope.loanData = data.details;
@@ -651,7 +646,7 @@ function createLoanChart (data) {
     }
 
     $scope.monthlyExpenses = function() {
-        $http.get('http://34fbd6e3.ngrok.io/monthly_totals?months=6')
+        $http.get('http://99df5d2d.ngrok.io/monthly_totals?months=6')
         .success(function (data, status) {
             console.log('monthly expenses', data);
             $scope.monthlyExpense = data;
@@ -662,7 +657,7 @@ function createLoanChart (data) {
 
     $scope.dailyExpenses = function() {
         
-        $http.get('http://34fbd6e3.ngrok.io/spending_data?days=30')
+        $http.get('http://99df5d2d.ngrok.io/spending_data?days=20')
         .success(function (data, status) {
             console.log('daily expense', data);
             $scope.dailyExpense = data;
@@ -673,18 +668,16 @@ function createLoanChart (data) {
     }
 
     $scope.savingsRecommendationsTable = function() {
-        
-        $http.get('http://34fbd6e3.ngrok.io/savings_reccs')
+        $http.get('http://99df5d2d.ngrok.io/savings_reccs')
         .success(function (data, status) {
             console.log('savings recommendations table expense', data.data);
             $scope.savingsRecommendationsTable = data.data;
+            $scope.savingsRecommendationsTable
+
             }).error(function (data, status) {
             console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
            })
     }
-
-    
-
 
     $scope.search = function(string) {
         $scope.searchResults = {};
@@ -1153,67 +1146,46 @@ function ($scope, $stateParams,$state, $http, $firebaseArray, backend, notifier)
 
     $scope.auth = firebase.auth();
     $scope.login = function() {
+        $state.go('dashboard');
         console.log("Loging");
-        var provider = new firebase.auth.GoogleAuthProvider();
-        $scope.auth.signInWithPopup(provider).then(function(user) {
-            // the access token will allow us to make Open Graph API calls.
-            if(user.user.uid) {
-            console.log("Logged in as", JSON.stringify(user), user);
-            $scope.authData = user.user;
-            $scope.userKey = $scope.authData.uid;
-		    $scope.userDisplayName = $scope.authData.displayName;
-            $scope.userUrl = $scope.authData.photoUrl;
+        // var provider = new firebase.auth.GoogleAuthProvider();
+        // $scope.auth.signInWithPopup(provider).then(function(user) {
+        //     // the access token will allow us to make Open Graph API calls.
+        //     if(user.user.uid) {
+        //     console.log("Logged in as", JSON.stringify(user), user);
+        //     // $scope.authData = user.user;
+        //     // $scope.userKey = $scope.authData.uid;
+		//     // $scope.userDisplayName = $scope.authData.displayName;
+        //     // $scope.userUrl = $scope.authData.photoUrl;
 
-            console.log('I am going to append', $scope.authData.uid, $scope.authData.Ed);
+        //     console.log('I am going to append', $scope.authData.uid, $scope.authData.Ed);
 
-            loginData.append('uid', $scope.authData.uid);
-            loginData.append('access-token', $scope.authData.Ed);
-
-            // Display the key/value pairs
-            for (var pair of loginData.entries()) {
-                console.log(pair[0]+ ', ' + pair[1]); 
-            }
-
-            console.log("here is the form data", loginData);
+        //     loginData.append('uid', $scope.authData.uid);
+        //     loginData.append('access-token', $scope.authData.Ed);
 
 
-            $http(
-                {
-                   method: 'Post',
-                   url: 'https://sbe.soundsearch.io/login',
-                   data: 'uid='+$scope.authData.uid+'&access-token='+$scope.authData.Ed,
-                   headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-                }).then(function success(response) {
-                    console.log('here are the details ', response.data);
-                    $scope.details = response.data.item;
-                    $state.go('dashboard', { 'sessionId': response.data.sessionId});
-                }, function error(response) {
-                   // called asynchronously if an error occurs
-                   // or server returns response with an error status.
-                   console.log ("Error occured while trying to fetch data", response)
-                   return response;
-            });
+        //     // $http(
+        //     //     {
+        //     //        method: 'Post',
+        //     //        url: 'https://sbe.soundsearch.io/login',
+        //     //        data: 'uid='+$scope.authData.uid+'&access-token='+$scope.authData.Ed,
+        //     //        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+        //     //     }).then(function success(response) {
+        //     //         console.log('here are the details ', response.data);
+        //     //         $scope.details = response.data.item;
+        //     //         $state.go('dashboard', { 'sessionId': response.data.sessionId});
+        //     //     }, function error(response) {
+        //     //        // called asynchronously if an error occurs
+        //     //        // or server returns response with an error status.
+        //     //        console.log ("Error occured while trying to fetch data", response)
+        //     //        return response;
+        //     // });
 
 
-
-            // $http.post('https://sbe.soundsearch.io/login', 
-            //  {
-            //     'uid': $scope.authData.uid,
-            //     'access-token': $scope.authData.Ed
-            // }
-            // , {
-            //     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-            // }).success(function (data, status, headers, config) {
-            //     console.log('posted user data and recieved a response', JSON.stringify(data), JSON.stringify(status));
-            //         // $state.go('chefsNearyby');
-            //     }).error(function (data, status, headers, config) {
-            //     console.log('There was a problem posting USER information' + JSON.stringify(data) + JSON.stringify(status)+ JSON.stringify(headers)+ JSON.stringify(config));
-            //    })
-
-            } else {
-                console.log("login Unsuccessful")
-            }
-        });
+        //     } else {
+        //         console.log("login Unsuccessful")
+        //     }
+        // });
     }
 
     $scope.signOut = function() {

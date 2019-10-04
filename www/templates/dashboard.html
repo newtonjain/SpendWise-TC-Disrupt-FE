@@ -1,48 +1,12 @@
 
 <ion-view title="Dashboard" id="page2">
-    <!-- <ion-nav-buttons side="right">
-        <button class="button button-outline  button-balanced" ng-click="showCard()"> Upload File  <i class="mdi mdi-arrow-up-bold"></i></button>
-      </ion-nav-buttons> -->
+    <ion-nav-buttons side="right">
+      <div class="imageCenter"> Sumbul &nbsp &nbsp</div>
+      
+        <img class="img-sm2 rounded-circle" src="https://uncubed.com/wp-content/uploads/2017/08/IMG_6605-300x294.jpg" alt="image" class="profile-pic">    
+      </ion-nav-buttons>
       <!-- <button class="button button-outline  button-assertive" ng-show="uploadfilecard" ng-click="showCard()"> Hide card  <i class="mdi mdi-close-circle-outline"></i></button> -->
   <ion-content padding="true" class="has-header" overflow-scroll="true" style="background-color: #f0f3f6">
-
-      <div class="col-12 grid-margin" ng-show="uploadfilecard"> 
-          <div class="card">
-              <div class="card-body">
-                  <div class="float-none float-sm-right"><i class="mdi mdi-close-circle-outline" ng-click="showCard()" >Close</i></div>
-                <!-- form group -->
-                  <div class="form-group">
-                      <label>File upload</label>
-                      <div class="input-group col-xs-12">
-                        <input type="file" class="form-control file-upload-info" ngf-select ng-model="file" placeholder="Upload file" onchange="angular.element(this).scope().checkfile(this.files)">
-                          <button class="file-upload-browse btn" ng-class="{btnDisabled:  !validFile, btnSuccess: validFile}" ng-disabled="!validFile" ng-click="uploadFile(this.file)" type="button"><i class="mdi mdi-arrow-up-bold"></i></button>
-                      </div>
-                      <p ng-show="errorAnnouncement.uploadfile ||  serverResponse.processStep == 'UploadError' || serverResponse.processStep == 'Failure' " class="text-danger"> Error. {{errorAnnouncement.uploadfile}} {{errorAnnouncement.processFailure}}</p>
-                    </div>  
-                    <div ng-show="validFile">
-                    <p class="text-success font-weight-bold ng-binding">File preview </p><audio controls ngf-src="file"></audio> <video controls ngf-src="file"></video>
-                  </div>
-                <!--  -->
-                <div ng-show="!serverResponse.success && serverResponse.processStep == 'Uploading' ">             
-                    <h5 class="text-info mb-4 mt-4">{{serverResponse.fileName}} is being uploaded to the server.</h5>
-                    <p class="text-info font-weight-bold">{{serverResponse.processStep}}. This step can take a while.</p>     
-                </div>
-                <!--  -->
-                <div ng-show="serverResponse.success && serverResponse.processStep == 'Transcribing' ">             
-                  <h5 class="text-warning mb-4 mt-4">{{serverResponse.fileName}} has been uploaded.</h5>
-                  <p class="text-warning font-weight-bold">{{serverResponse.processStep}}. This step can take a while.</p>     
-              </div>
-                <!--  -->
-                <div ng-show="serverResponse.success && serverResponse.processStep == 'Done' ">             
-                    <h5 class="text-success mb-4 mt-4">{{serverResponse.fileName}} has been processed.</h5>
-                    <p class="text-success font-weight-bold ng-binding">Process step: Done. <a href="#/details/c483e6fb-236b-42d4-a885-c63fbadb1ef6" class="float-none float-sm-right"><button class="btn btn-success" type="button">Details</button></a></p>
-                </div>
-                <!--  -->
-              </div>
-          </div>
-      </div>       
-
- 
       <div class="row">
         <div class="col-sm-8 flex-column d-flex stretch-card">
           <div class="row">
@@ -69,7 +33,7 @@
             <div class="col-lg-4 d-flex grid-margin stretch-card">
               <div class="card sale-visit-statistics-border">
                 <div class="card-body">
-                  <h2 class="text-dark mb-2 font-weight-bold">{{loanData.loan_info.origination_principal_amount}}</h2>
+                  <h2 class="text-dark mb-2 font-weight-bold">${{loanData.loan_info.origination_principal_amount}}</h2>
                   <h4 class="card-title mb-2">{{loanData.loan_info.guarantor}}</h4>
                   <small class="text-muted">Next Payment: {{loanData.loan_info.next_payment_due_date}}</small>
                 </div>
@@ -151,8 +115,9 @@
 								</div>
 							</div> -->
 
-    <div class="row mt-4">
-      <div class="col-lg-8 card">
+<div class="row">
+    <div class=" col-lg-6">
+      <div class="card">
         <div class="card-body">
           <h4 class="card-title">Savings Recommendations Table</h4>
           <p class="card-description">
@@ -196,37 +161,26 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 mb-3 mb-lg-0">
-        <div class="card congratulation-bg text-center">
-          <div class="card-body pb-0">
-            <img src="images/dashboard/face29.png" alt="">  
-            <h2 class="mt-3 text-white mb-3 font-weight-bold">Congratulations
-              Johnson
-            </h2>
-            <p>You have saved $248 so far this month. 
-              Keep up with better spending habits to reach your monthly savings goals.
-            </p>
+    </div>
+    <div class=" col-lg-6  grid-margin stretch-card">
+        <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Recommended</h4>
+          <div ng-repeat="business in alternativeBusiness  | limitTo : 7" class="d-flex align-items-center pb-3 border-bottom">
+            <img class="img-sm rounded-circle" src="{{business.TemplateData.Image.URL}}" alt="profile">
+            <div class="ml-3">
+              <h6 class="mb-1">{{business.TemplateData.Title}}</h6>
+              <small class="text-muted mb-0"><i class="mdi mdi-map-marker mr-1"></i>{{business.TemplateData.BodyText}}</small>
+            </div>
+            <i class="mdi mdi-check-circle-outline font-weight-bold ml-auto px-1 py-1 text-info mdi-24px"></i>
           </div>
         </div>
-      </div>
+          </div>
     </div>
+</div>
 
 
-    <div class="row mt-4">
-      <div class="col-lg-8 card">
-    <div class="card-body">
-      <h4 class="card-title">Recommended</h4>
-      <div ng-repeat="business in alternativeBusiness" class="d-flex align-items-center pb-3 border-bottom">
-        <img class="img-sm rounded-circle" src="{{business.TemplateData.Image.URL}}" alt="profile">
-        <div class="ml-3">
-          <h6 class="mb-1">{{business.TemplateData.Title}}</h6>
-          <small class="text-muted mb-0"><i class="mdi mdi-map-marker mr-1"></i>{{business.TemplateData.BodyText}}</small>
-        </div>
-        <i class="mdi mdi-check-circle-outline font-weight-bold ml-auto px-1 py-1 text-info mdi-24px"></i>
-      </div>
-    </div>
-      </div>
-    </div>
+
 
       <!-- <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
