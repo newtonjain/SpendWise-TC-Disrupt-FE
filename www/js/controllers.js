@@ -623,7 +623,7 @@ function createLoanChart (data) {
 
     $scope.getLoanInfo = function() {
         
-        $http.get('http://99df5d2d.ngrok.io/get_liability_details?transactions=3')
+        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/get_liability_details?transactions=3')
         .success(function (data, status) {
             // console.log('1', data)
             $scope.loanData = data.details;
@@ -646,7 +646,7 @@ function createLoanChart (data) {
     }
 
     $scope.monthlyExpenses = function() {
-        $http.get('http://99df5d2d.ngrok.io/monthly_totals?months=6')
+        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/monthly_totals?months=6')
         .success(function (data, status) {
             console.log('monthly expenses', data);
             $scope.monthlyExpense = data;
@@ -657,7 +657,7 @@ function createLoanChart (data) {
 
     $scope.dailyExpenses = function() {
         
-        $http.get('http://99df5d2d.ngrok.io/spending_data?days=20')
+        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/spending_data?days=20')
         .success(function (data, status) {
             console.log('daily expense', data);
             $scope.dailyExpense = data;
@@ -668,7 +668,7 @@ function createLoanChart (data) {
     }
 
     $scope.savingsRecommendationsTable = function() {
-        $http.get('http://99df5d2d.ngrok.io/savings_reccs')
+        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/savings_reccs')
         .success(function (data, status) {
             console.log('savings recommendations table expense', data.data);
             $scope.savingsRecommendationsTable = data.data;
