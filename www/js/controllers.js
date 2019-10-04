@@ -369,8 +369,8 @@ function createLoanChart (data) {
         }
         for(var i = data.daily_expenses.length; i< data.predictions.length; i++) {
             labels[i] = data.predictions[i].date;
-            datalabels[i] = data.predictions[i].amount*1.3
-            spendwiseLabels[i] = data.predictions[i].amount*1.3*0.7
+            datalabels[i] = data.predictions[i].amount*21
+            spendwiseLabels[i] = data.predictions[i].amount*17*0.7
         }
 
         console.log('here are the labels', labels, datalabels )
