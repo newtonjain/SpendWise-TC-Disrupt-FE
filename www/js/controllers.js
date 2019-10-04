@@ -24,7 +24,7 @@ function ($scope, $stateParams,$state, backend) {
 }])
 
 
-.controller('chefsNearybyCtrl', [
+.controller('dashboardCtrl', [
     '$scope', '$stateParams', 'backend', 'location', 'notifier','$http', 'FileUploader', 'Upload',
 function ($scope, $stateParams, backend, location, notifier,$http, FileUploader, Upload) {
     $scope.serverIsProcessing = false;
@@ -32,6 +32,7 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
     $scope.allFiles = {};
     $scope.errorAnnouncement = {};
     $scope.alternativeBusiness = {}
+    $scope.AIHoundifyResponse = "";
     progressJs().setOption("theme", "green").start().autoIncrease(4, 500);
     console.log('here is the state Params', $stateParams.sessionId);
     $scope.sessionID = $stateParams.sessionId;
@@ -94,12 +95,24 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
         });
     }
 
+    function createLoanChart2 (data) {
+
+        console.log('here is the loan data', data);
+
+        let labels = [];
+        let datalabels = [];
+
+        for(var i=0; i<data.current_liabilities.length; i++){
+            labels[i] = data.current_liabilities[i].date;
+            datalabels[i] = data.current_liabilities[i].amount 
+        }
+
 
     var areaData = {
-        labels: ["2013", "2014", "2015", "2016", "2017", "2018", "2019"],
+        labels: labels,
         datasets: [{
           label: 'Debt left',
-          data: [60000, 50000, 40000, 30000, 20000,10000,0],
+          data: datalabels,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -136,26 +149,74 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
           options: areaOptions
         });
       }
+    }
 
+function createLoanChart (data) {
+    console.log('here is the loan data', data);
+    
+            let current_liabilities_labels = [];
+            let current_liabilities_datalabels = [];
+            let interest_labels = [];
+            let interest_datalabels = [];
 
-      var multiAreaData = {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            let reduced_liabilities_labels = [];
+            let reduced_liabilities_datalabels = [];
+            let reduced_interest_labels = [];
+            let reduced_interest_datalabels = [];
+    
+            for(var i=0; i<data.current_liabilities.length; i++){
+                current_liabilities_labels[i] = data.current_liabilities[i].date;
+                current_liabilities_datalabels[i] = data.current_liabilities[i].amount;
+                interest_labels[i] = data.current_interest_payments[i].date;
+                interest_datalabels[i] = data.current_interest_payments[i].amount  
+
+                reduced_liabilities_labels[i] = data.reduced_liabilities[i].date;
+                reduced_liabilities_datalabels[i] = data.reduced_liabilities[i].amount;
+                reduced_interest_labels[i] = data.reduced_interest_payments[i].date;
+                reduced_interest_datalabels[i] = data.reduced_interest_payments[i].amount;
+            }
+
+                
+            for(var i=0; i<data.current_interest_payments.length; i++){
+                interest_labels[i] = data.current_interest_payments[i].date;
+                interest_datalabels[i] = data.current_interest_payments[i].amount 
+            }
+
+    var multiAreaData = {
+        labels: current_liabilities_labels,
         datasets: [{
-            label: 'With SpendWise',
-            data: [24, 21, 25, 24, 21, 20, 24, 28, 25, 17, 20, 20],
-            borderColor: ['rgba(255, 99, 132, 0.5)'],
-            backgroundColor: ['rgba(50,205,50, 0.5)'],
+            label: 'Debt',
+            data: current_liabilities_datalabels,
+            borderColor: ['rgba(255,165,0, 0.5)'],
+            backgroundColor: ['rgba(54, 162, 235, 0.5)'],
             borderWidth: 1,
             fill: true
           },
           {
-            label: 'Without Spendwise',
-            data: [27, 25, 29, 26, 25, 22, 28, 30, 29, 19, 22, 29],
-            borderColor: ['rgba(54, 162, 235, 0.5)'],
-            backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+            label: 'Spendwise Debt',
+            data: reduced_liabilities_datalabels,
+            borderColor: ['rgba(50,205,50, 0.5)'],
+            backgroundColor: ['rgba(50,205,50, 0.5)'],
             borderWidth: 1,
             fill: true
           }
+        //   ,
+        //   {
+        //     label: 'Interest',
+        //     data: interest_datalabels,
+        //     borderColor: ['rgba(255, 99, 132, 0.5)'],
+        //     backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+        //     borderWidth: 1,
+        //     fill: true
+        //   },
+        //   {
+        //     label: 'Reduced Interest',
+        //     data: reduced_interest_datalabels,
+        //     borderColor: ['rgba(255, 99, 132, 0.5)'],
+        //     backgroundColor: ['rgba(245, 32, 11, 0.5)'],
+        //     borderWidth: 1,
+        //     fill: true
+        //   }
         ]
       };
 
@@ -184,6 +245,182 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
         }
       }
 
+      if ($("#areachart-loan").length) {
+        var multiAreaCanvas = $("#areachart-loan").get(0).getContext("2d");
+        var multiAreaChart = new Chart(multiAreaCanvas, {
+          type: 'line',
+          data: multiAreaData,
+          options: multiAreaOptions
+        });
+      }
+    }
+
+//     {
+
+//     var supportTrackerData = {
+//         labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", ],
+//         datasets: [{
+//             label: 'New Tickets',
+//             data: [640, 750, 500, 400, 1200, 650, 550, 450, 400],
+//             backgroundColor: [
+//                 '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', 
+//             ],
+//             borderColor: [
+//                 '#464dee', '#464dee', '#464dee', '#464dee',  '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', 
+//             ],
+//             borderWidth: 1,
+//             fill: false
+//         },
+//         {
+//                 label: 'Open Tickets',
+//                 data: [800, 550, 700, 600, 1100, 650, 550, 650, 850],					
+//                 backgroundColor: [
+//                     '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', 
+//                 ],
+//                 borderColor: [
+//                     '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', 
+//                 ],
+//                 borderWidth: 1,
+//                 fill: false
+//         }
+//         ]
+//     };
+//     var supportTrackerOptions = {
+//         scales: {
+//             xAxes: [{
+//             stacked: true,
+//             barPercentage: 0.6,
+//             position: 'bottom',
+//             display: true,
+//             gridLines: {
+//                 display: false,
+//                 drawBorder: false,
+//             },
+//             ticks: {
+//                 display: true, //this will remove only the label
+//                 stepSize: 300,
+//             }
+//             }],
+//             yAxes: [{
+//                 stacked: true,
+//                 display: true,
+//                 gridLines: {
+//                     drawBorder: false,
+//                     display: true,
+//                     color: "#f0f3f6",
+//                     borderDash: [8, 4],
+//                 },
+//                 ticks: {
+//                     beginAtZero: true,
+//                     callback: function(value, index, values) {
+//                     return '$' + value;
+//                     }
+//                 },
+//             }]
+//         },
+//         legend: {
+//             display: false
+//         },
+//         legendCallback: function(chart) {
+//             var text = [];
+//             text.push('<ul class="' + chart.id + '-legend">');
+//             for (var i = 0; i < chart.data.datasets.length; i++) {
+//                 text.push('<li><span class="legend-box" style="background:' + chart.data.datasets[i].backgroundColor[i] + ';"></span><span class="legend-label text-dark">');
+//                 if (chart.data.datasets[i].label) {
+//                         text.push(chart.data.datasets[i].label);
+//                 }
+//                 text.push('</span></li>');
+//             }
+//             text.push('</ul>');
+//             return text.join("");
+//         },
+//         tooltips: {
+//             backgroundColor: 'rgba(0, 0, 0, 1)',
+//         },
+//         plugins: {
+//             datalabels: {
+//                 display: false,
+//                 align: 'center',
+//                 anchor: 'center'
+//             }
+//         }				
+//     };
+//     if ($("#supportTracker").length) {
+//         var barChartCanvas = $("#supportTracker").get(0).getContext("2d");
+//         // This will get the first returned node in the jQuery collection.
+//         var barChart = new Chart(barChartCanvas, {
+//             type: 'bar',
+//             data: supportTrackerData,
+//             options: supportTrackerOptions
+//         });
+//         document.getElementById('support-tracker-legend').innerHTML = barChart.generateLegend();
+//     }
+// }
+
+      function createDailyExpenseChart (data) {
+          let labels = [];
+          let datalabels = [];
+          let spendwiseLabels = []
+
+        for(var i=0; i<data.daily_expenses.length; i++){
+            labels[i] = data.daily_expenses[i].date;
+            datalabels[i] = data.daily_expenses[i].amount 
+            spendwiseLabels[i] = 0;
+        }
+        for(var i = data.daily_expenses.length; i< data.predictions.length; i++) {
+            labels[i] = data.predictions[i].date;
+            datalabels[i] = data.predictions[i].amount 
+            spendwiseLabels[i] = data.predictions[i].amount*0.7
+        }
+
+        console.log('here are the labels', labels, datalabels )
+      var multiAreaData = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'With Spendwise',
+                data: spendwiseLabels,
+                borderColor: ['rgba(255, 99, 132, 0.5)'],
+                backgroundColor: ['rgba(50,205,50, 0.5)'],
+                borderWidth: 0.1,
+                fill: true
+              },
+            {
+            label: 'Without SpendWise',
+            data: datalabels,
+            borderColor: ['rgba(255, 99, 132, 0.5)'],
+            backgroundColor: ['rgba(255,215,0, 0.5)'],
+            borderWidth: 0.1,
+            fill: true
+          }
+        ]
+      };
+
+      var multiAreaOptions = {
+        plugins: {
+          filler: {
+            propagate: true
+          }
+        },
+        elements: {
+          point: {
+            radius: 0.1
+          }
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              display: false
+            }
+          }],
+          yAxes: [{
+            gridLines: {
+              display: false
+            }
+          }]
+        }
+      }
+
       if ($("#areachart-multi").length) {
         var multiAreaCanvas = $("#areachart-multi").get(0).getContext("2d");
         var multiAreaChart = new Chart(multiAreaCanvas, {
@@ -191,6 +428,181 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
           data: multiAreaData,
           options: multiAreaOptions
         });
+      }
+
+    }
+      var responseElt = document.getElementById("responseJSON");
+      var infoElt = document.getElementById("infoJSON");
+      var statusElt = document.getElementById("status");
+      var transcriptElt = document.getElementById("query");
+
+      var clientID = "SPcn27cka11iuXGEiGRXfg==";
+      var conversationState = null;
+      $scope.voiceRequest = null;
+
+      var recorder = new Houndify.AudioRecorder();
+      recorder.on('start', function() { 
+          console.log('starting recorder'); 
+        //Initialize VoiceRequest
+        $scope.voiceRequest = $scope.initVoiceRequest(recorder.sampleRate);
+        // document.getElementById("voiceIcon").className = "selected radio icon big red";
+      });
+
+      recorder.on('data', function(data) {
+          console.log('writing data')
+          $scope.voiceRequest.write(data);
+      });
+
+      recorder.on('end', function() {
+        $scope.voiceRequest.end();
+        // statusElt.innerText = "Stopped recording. Waiting for response...";
+        console.log('stopped recording waiting for response');
+        document.getElementById("voiceIcon").className = "unmute big icon";
+        document.getElementById("textSearchButton").disabled = false;
+        document.getElementById("query").readOnly = false;
+      });
+
+      recorder.on('error', function(error) {
+        $scope.voiceRequest.abort();
+        // statusElt.innerText = "Error: " + error;
+        console.log('got error', error);
+        document.getElementById("voiceIcon").className = "unmute big icon";
+        document.getElementById("textSearchButton").disabled = false;
+        document.getElementById("query").readOnly = false;
+      });
+      
+
+      $scope.initVoiceRequest = function (sampleRate) {
+          console.log('1');
+        // responseElt.parentNode.hidden = true;
+        // infoElt.parentNode.hidden = true;
+        
+        var voiceRequest = new Houndify.VoiceRequest({
+          //Your Houndify Client ID
+          clientId: "SPcn27cka11iuXGEiGRXfg==",
+
+          //For testing environment you might want to authenticate on frontend without Node.js server. 
+          //In that case you may pass in your Houndify Client Key instead of "authURL".
+          clientKey: "ZzwvFaJT0FtxgeUYw5C2ZTL043dSlH8vO5p0DbVf0ehp0L3jxtZjXMTGQZn8UZvnodaTo7bPP0g5-gnG4Ui3rw==",
+
+          //Otherwise you need to create an endpoint on your server
+          //for handling the authentication.
+          //See SDK's server-side method HoundifyExpress.createAuthenticationHandler().
+        //   authURL: "/houndifyAuth",
+
+          //REQUEST INFO JSON
+          //See https://houndify.com/reference/RequestInfo
+          requestInfo: { 
+            UserID: "test_user",
+            Latitude: 37.388309, 
+            Longitude: -121.973968
+          },
+
+          //Pass the current ConversationState stored from previous queries
+          //See https://www.houndify.com/docs#conversation-state
+          conversationState: conversationState,
+
+          //Sample rate of input audio
+          sampleRate: sampleRate,
+
+          //Enable Voice Activity Detection
+          //Default: true
+          enableVAD: true,
+          
+          //Partial transcript, response and error handlers
+          onTranscriptionUpdate: onTranscriptionUpdate,
+          onResponse: function(response, info) {
+            console.log('2');
+            recorder.stop();
+            console.log('3');
+            onResponse(response, info);
+          },
+          onError: function(err, info) {
+            recorder.stop();
+            onError(err, info);
+          }
+        });
+
+        return voiceRequest;
+      }
+
+
+      $scope.onMicrophoneClick = function () {
+        if (recorder && recorder.isRecording()) {
+          recorder.stop();
+          return;
+        }
+
+        recorder.start();
+
+        // statusElt.innerText = "Streaming voice request...";
+        document.getElementById("voiceIcon").className = "loading circle notched icon big";
+        document.getElementById("textSearchButton").disabled = true;
+        document.getElementById("query").readOnly = true;  
+      }
+
+      function onFileUpload() {
+        var reader = new FileReader();
+        reader.onload = function() {  
+          //In browsers only you can also upload and decode 
+          //audio file using decodeArrayBuffer() method
+          //Stream 8/16 kHz mono 16-bit little-endian PCM samples 
+          //in Int16Array() chunks to backend
+          var arrayBuffer = reader.result;
+          Houndify.decodeAudioData(arrayBuffer, function(err, result) {
+            statusElt.innerText = "Streaming audio from file...";
+            voiceRequest = initVoiceRequest(result.sampleRate);
+            voiceRequest.write(result.audioData);
+            voiceRequest.end();
+          });
+
+          statusElt.innerText = "Decoding audio from file...";
+        };
+
+        var file = document.getElementById("file").files[0];
+        reader.readAsArrayBuffer(file);
+      }
+
+
+      //Fires after server responds with Response JSON
+      //Info object contains useful information about the completed request
+      //See https://houndify.com/reference/HoundServer
+      function onResponse(response, info) {
+        if (response.AllResults && response.AllResults.length) {
+          //Pick and store appropriate ConversationState from the results. 
+          //This example takes the default one from the first result.
+          conversationState = response.AllResults[0].ConversationState;
+          console.log('7', response.AllResults[0].SpokenResponse);
+          $scope.AIHoundifyResponse = response.AllResults[0].SpokenResponse;
+        //   var speech = new SpeechSynthesisUtterance($scope.AIHoundifyResponse);
+        //   var voices = window.speechSynthesis.getVoices();
+        //   speech.voice = voices[40];
+        //   window.speechSynthesis.speak(speech);
+         
+           window.speechSynthesis.speak(new SpeechSynthesisUtterance($scope.AIHoundifyResponse));
+          $scope.$apply();
+        }
+        console.log('4');
+        // statusElt.innerText = "Received response.";
+        // responseElt.parentNode.hidden = false;
+        // responseElt.value = response.stringify(undefined, 2);
+        // infoElt.parentNode.hidden = false;
+        // infoElt.value = JSON.stringify(info, undefined, 2);
+      }
+
+      //Fires if error occurs during the request
+      function onError(err, info) {
+        // statusElt.innerText = "Error: " + JSON.stringify(err);
+        // responseElt.parentNode.hidden = true;
+        // infoElt.parentNode.hidden = false;
+        // infoElt.value = JSON.stringify(info, undefined, 2);
+      }
+
+      //Fires every time backend sends a speech-to-text 
+      //transcript of a voice query
+      //See https://houndify.com/reference/HoundPartialTranscript
+      function onTranscriptionUpdate(transcript) {
+        transcriptElt.value = transcript.PartialTranscript;
       }
 
       
@@ -202,6 +614,33 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
         // console.log('here are the files ', $scope.files );
 
 
+
+
+           $scope.getLoanInfo();
+            $scope.getLocalRecommendations(); 
+           $scope.dailyExpenses();
+            $scope.monthlyExpenses();
+            $scope.savingsRecommendationsTable();
+
+    };
+    notifier.addListener(update);
+    
+
+    $scope.getLoanInfo = function() {
+        
+        $http.get('http://34fbd6e3.ngrok.io/get_liability_details?transactions=3')
+        .success(function (data, status) {
+            // console.log('1', data)
+            $scope.loanData = data.details;
+            console.log('Loan Data', data, $scope.loanData);
+            createLoanChart(data);
+            }).error(function (data, status) {
+            console.log('There was a getting loan info' + JSON.stringify(data) + JSON.stringify(status));
+           })
+    }
+
+    $scope.getLocalRecommendations = function() {
+        
         $http.get('https://spendwise-business-search.herokuapp.com/houndify-results?query="find%20cheap%20restaurants%20near%20me%20"')
         .success(function (data, status) {
             console.log('business search', data.AllResults[0].TemplateData.Items, JSON.stringify(status));
@@ -209,11 +648,43 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
             }).error(function (data, status) {
             console.log('There was a problem posting your information' + JSON.stringify(data) + JSON.stringify(status));
            })
+    }
 
-    };
-    notifier.addListener(update);
-    update();
-    console.log('here are the files page', $scope.files);
+    $scope.monthlyExpenses = function() {
+        $http.get('http://34fbd6e3.ngrok.io/monthly_totals?months=6')
+        .success(function (data, status) {
+            console.log('monthly expenses', data);
+            $scope.monthlyExpense = data;
+            }).error(function (data, status) {
+            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+           })
+    }
+
+    $scope.dailyExpenses = function() {
+        
+        $http.get('http://34fbd6e3.ngrok.io/spending_data?days=30')
+        .success(function (data, status) {
+            console.log('daily expense', data);
+            $scope.dailyExpense = data;
+            createDailyExpenseChart($scope.dailyExpense)
+            }).error(function (data, status) {
+            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+           })
+    }
+
+    $scope.savingsRecommendationsTable = function() {
+        
+        $http.get('http://34fbd6e3.ngrok.io/savings_reccs')
+        .success(function (data, status) {
+            console.log('savings recommendations table expense', data.data);
+            $scope.savingsRecommendationsTable = data.data;
+            }).error(function (data, status) {
+            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+           })
+    }
+
+    
+
 
     $scope.search = function(string) {
         $scope.searchResults = {};
@@ -471,6 +942,8 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
         // });
         }
 
+        update();
+
 }])
 
 
@@ -713,7 +1186,7 @@ function ($scope, $stateParams,$state, $http, $firebaseArray, backend, notifier)
                 }).then(function success(response) {
                     console.log('here are the details ', response.data);
                     $scope.details = response.data.item;
-                    $state.go('chefsNearyby', { 'sessionId': response.data.sessionId});
+                    $state.go('dashboard', { 'sessionId': response.data.sessionId});
                 }, function error(response) {
                    // called asynchronously if an error occurs
                    // or server returns response with an error status.

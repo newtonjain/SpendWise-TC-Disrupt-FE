@@ -9,10 +9,10 @@ angular.module('app.routes', ['ionicUIRouter'])
   $stateProvider
 
 
-    .state('chefsNearyby', {
-    url: '/chefs-nearby',
-        templateUrl: 'templates/chefsNearyby.html',
-        controller: 'chefsNearybyCtrl',
+    .state('dashboard', {
+    url: '/dashboard',
+        templateUrl: 'templates/dashboard.html',
+        controller: 'dashboardCtrl',
         params:{'sessionId':null}
   })
 

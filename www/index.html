@@ -104,16 +104,19 @@
     <script src='lib/progress-js/src/progress.js'></script>
     <link rel='stylesheet' href='lib/progress-js/src/progressjs.css'/>
 
-
     <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
 
     <script src="vendors/base/vendor.bundle.base.js"></script>
     <script src="vendors/chart.js/Chart.min.js"></script>
     <script src="vendors/progressbar.js/progressbar.min.js"></script>
-		<script src="vendors/chartjs-plugin-datalabels/chartjs-plugin-datalabels.js"></script>
+		<!-- <script src="vendors/chartjs-plugin-datalabels/chartjs-plugin-datalabels.js"></script> -->
 		<script src="vendors/justgage/raphael-2.1.4.min.js"></script>
     <script src="vendors/justgage/justgage.js"></script>
+    <script src="vendors/houndify/houndify.js"></script>
+
+    <script src="https://cdn.pubnub.com/pubnub-3.15.1.min.js"></script>
+    <script src="https://cdn.pubnub.com/sdk/pubnub-angular/pubnub-angular-3.2.1.min.js"></script>
 
 
   </head>
@@ -135,8 +138,8 @@
       </ion-header-bar>
       <ion-content ng-controller="menuCtrl" padding="false" class="side-menu-left has-header ">
         <ion-list id="menu-list1" data-componentid="list1">
-          <ion-item ng-show="user.type === &apos;customer&apos;" class="item-icon-left" id="menu-list-item9" ui-sref="chefsNearyby" menu-close="" data-componentid="list-item9">
-            <i class="icon ion-disc"></i>Search
+          <ion-item ng-show="user.type === &apos;customer&apos;" class="item-icon-left" id="menu-list-item9" ui-sref="dashboard" menu-close="" data-componentid="list-item9">
+            <i class="icon ion-lightbulb"></i>Dashboard
           </ion-item>
           <ion-item class="item-icon-left" id="menu-list-item11" ui-sref="profile" menu-close="" data-componentid="list-item11">
             <i class="icon ion-ios-contact-outline"></i>Profile</ion-item>

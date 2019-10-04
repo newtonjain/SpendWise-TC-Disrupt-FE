@@ -42,33 +42,78 @@
           </div>
       </div>       
 
+ 
       <div class="row">
-        <div class="col-lg-4 d-flex grid-margin stretch-card">
-          <div class="card sale-diffrence-border">
-            <div class="card-body">
-              <h2 class="text-dark mb-2 font-weight-bold">$1400</h2>
-              <h4 class="card-title mb-2">Monthly Expenses</h4>
-              <small class="text-muted">Sept 2019</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 d-flex grid-margin stretch-card">
-          <div class="card bg-success">
-            <div class="card-body text-white">
-              <h3 class="font-weight-bold mb-3">$248</h3>
-              <div class="progress mb-3">
-                <div class="progress-bar  bg-warning" role="progressbar" style="width: 40%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="col-sm-8 flex-column d-flex stretch-card">
+          <div class="row">
+            <div class="col-lg-4 d-flex grid-margin stretch-card">
+              <div class="card sale-diffrence-border">
+                <div class="card-body">
+                  <h2 class="text-dark mb-2 font-weight-bold">{{monthlyExpense[0].total}}</h2>
+                  <h4 class="card-title mb-2">Monthly Expenses</h4>
+                  <small class="text-muted">Sept 2019</small>
+                </div>
               </div>
-              <p class="pb-0 bold mb-0"><b>Savings</b></p>
+            </div>
+            <div class="col-lg-4 d-flex grid-margin stretch-card">
+              <div class="card bg-success">
+                <div class="card-body text-white">
+                  <h3 class="font-weight-bold mb-3">$248</h3>
+                  <div class="progress mb-3">
+                    <div class="progress-bar  bg-warning" role="progressbar" style="width: 40%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="pb-0 bold mb-0"><b>Savings</b></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 d-flex grid-margin stretch-card">
+              <div class="card sale-visit-statistics-border">
+                <div class="card-body">
+                  <h2 class="text-dark mb-2 font-weight-bold">{{loanData.loan_info.origination_principal_amount}}</h2>
+                  <h4 class="card-title mb-2">{{loanData.loan_info.guarantor}}</h4>
+                  <small class="text-muted">Next Payment: {{loanData.loan_info.next_payment_due_date}}</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 d-flex grid-margin stretch-card">
-          <div class="card sale-visit-statistics-border">
-            <div class="card-body">
-              <h2 class="text-dark mb-2 font-weight-bold">$20,000</h2>
-              <h4 class="card-title mb-2">Student Debt</h4>
-              <small class="text-muted">Since APRIL 2013</small>
+        <div class="col-sm-4 flex-column d-flex stretch-card">
+          <div class="row flex-grow">
+            <div class="col-sm-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-8">
+                      <h3 class="font-weight-bold text-dark">AI Assistant</h3>
+                      <input id="query" type="text" placeholder="Click on the microphone" />
+                      <!-- <div class="d-lg-flex align-items-baseline mb-3">
+                        <h1 class="text-dark font-weight-bold">23<sup class="font-weight-light"><small>o</small><small class="font-weight-medium">c</small></sup></h1>
+                        <p class="text-muted ml-3">Partly cloudy</p>
+                      </div> -->
+                    </div>
+                    <div class="col-md-2">
+                      <div class="position-relative">
+
+                        <button type="button" ng-click="onMicrophoneClick()" class="btn btn-outline-success btn-icon-text">
+                            <i class="mdi mdi-microphone btn-icon-prepend"></i>                                                  
+                            Voice
+                          </button>
+                      </div>
+
+                      
+                    </div>
+                  </div>
+                  <div class="row" ng-show="AIHoundifyResponse">
+                    <div class="col-sm-12 mt-4 mt-lg-0">
+                      <div class="bg-warning text-white px-4 py-4 card">
+                        <div class="row">
+                          <b>{{AIHoundifyResponse}}</b>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -79,7 +124,7 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Liabilities trend</h4>
-            <canvas id="areaChart"></canvas>
+            <canvas id="areachart-loan"></canvas>
           </div>
         </div>
       </div>
@@ -94,6 +139,18 @@
       </div>
     </div>
 
+<!-- 
+    							<div class="card">
+								<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between">
+										<h4 class="card-title">Support Tracker</h4>
+										<h4 class="text-success font-weight-bold">Tickets<span class="text-dark ml-3">163</span></h4>
+									</div>
+									<div id="support-tracker-legend" class="support-tracker-legend"></div>
+									<canvas id="supportTracker"></canvas>
+								</div>
+							</div> -->
+
     <div class="row mt-4">
       <div class="col-lg-8 card">
         <div class="card-body">
@@ -106,13 +163,10 @@
               <thead>
                 <tr>
                   <th>
-                    Vencor
+                    Vendor
                   </th>
                   <th>
                     Category
-                  </th>
-                  <th>
-                    Potential Saving
                   </th>
                   <th>
                     Expected Expense
@@ -123,99 +177,18 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr ng-repeat="item in savingsRecommendationsTable">
                   <td class="py-1">
-                    <img src="../../images/faces/face1.jpg" alt="image"/>
+                    <img src="{{item.url}}" alt="image"/>
                   </td>
                   <td>
-                    Breakfast
+                   {{item.category}}
                   </td>
                   <td>
-                    <div class="progress">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    {{item.expected}}
                   </td>
                   <td>
-                    $ 15
-                  </td>
-                  <td>
-                    $5
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-1">
-                    <img src="../../images/faces/face2.jpg" alt="image"/>
-                  </td>
-                  <td>
-                    Lunch
-                  </td>
-                  <td>
-                    <div class="progress">
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </td>
-                  <td>
-                    $24.5
-                  </td>
-                  <td>
-                    $20
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-1">
-                    <img src="../../images/faces/face3.jpg" alt="image"/>
-                  </td>
-                  <td>
-                    Dinner
-                  </td>
-                  <td>
-                    <div class="progress">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </td>
-                  <td>
-                    $30
-                  </td>
-                  <td>
-                    $20
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-1">
-                    <img src="../../images/faces/face4.jpg" alt="image"/>
-                  </td>
-                  <td>
-                    Entertainment
-                  </td>
-                  <td>
-                    <div class="progress">
-                      <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </td>
-                  <td>
-                    $ 18
-                  </td>
-                  <td>
-                    $12
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-1">
-                    <img src="../../images/faces/face5.jpg" alt="image"/>
-                  </td>
-                  <td>
-                    Shopping
-                  </td>
-                  <td>
-                    <div class="progress">
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </td>
-                  <td>
-                    $ 160
-                  </td>
-                  <td>
-                    $25
+                    {{item.savings}}
                   </td>
                 </tr>
               </tbody>
