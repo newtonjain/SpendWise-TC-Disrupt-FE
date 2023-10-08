@@ -1,0 +1,28 @@
+resources:
+  - name: costcurve-backend-service
+    type: compute.v1.instance
+    properties:
+      zone: us-central1-a
+      machineType: https://www.googleapis.com/compute/v1/projects/Costcurve/zones/us-central1-a/machineTypes/n1-standard-1
+      disks:
+        - deviceName: boot
+          type: PERSISTENT
+          boot: true
+          autoDelete: true
+          initializeParams:
+            sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20180806
+      networkInterfaces:
+        - network: https://www.googleapis.com/compute/v1/projects/Costcurve/global/networks/default
+          accessConfigs:
+            - name: External NAT
+              type: ONE_TO_ONE_NAT
+      metadata:
+        items:
+          - key: startup-script
+            value: |
+              #!/bin/bash
+              sudo apt-get update
+              sudo apt-get install -y nginx
+              sudo service nginx start
+              echo '<!doctype html><html><body><h1>Hello World!</h1></body></html>' | sudo tee /var/www/html/index.nginx-debian.html
+

@@ -41,3 +41,59 @@ gcloud app deploy
 Please note that you need to have the Google Cloud SDK installed and configured on your machine to deploy your application to Google Cloud. Also, you need to have a Google Cloud project and enable the necessary APIs (Cloud Run API for Cloud Run and App Engine Admin API for App Engine).
 
 Remember, this is a very basic guide and doesn't include any error handling, data validation, or actual logic for your application. You'll need to implement those parts yourself.
+
+## Infrastructure Setup
+
+1. **Google Cloud Project**: Ensure you have a Google Cloud project created. In this case, your project is named `CostCurve`.
+
+2. **Google Cloud SDK**: Install and configure the Google Cloud SDK on your machine. This will allow you to interact with your Google Cloud resources from your local machine.
+
+3. **Google Cloud SQL**: Create a Google Cloud SQL instance for your application. This will be used to store your application's data.
+
+```bash
+gcloud sql instances create my-instance --project=CostCurve
+```
+
+4. **Google Cloud Storage**: Create a Google Cloud Storage bucket for your application. This will be used to store your application's static files.
+
+```bash
+gsutil mb gs://my-bucket --project=CostCurve
+```
+
+5. **Google Cloud Run**: Deploy your application to Google Cloud Run. This will create a new service in Cloud Run that will host your application.
+
+```bash
+gcloud run deploy --image gcr.io/CostCurve/my-image --project=CostCurve
+```
+
+6. **Google Cloud Build**: Build your application's Docker image using Google Cloud Build. This will create a new Docker image that can be deployed to Cloud Run.
+
+```bash
+gcloud builds submit --tag gcr.io/CostCurve/my-image
+```
+
+7. **Google Cloud Firestore**: Create a Google Cloud Firestore database for your application. This will be used to store your application's data.
+
+```bash
+gcloud firestore databases create --project=CostCurve
+```
+
+8. **Google Cloud Pub/Sub**: Create a Google Cloud Pub/Sub topic for your application. This will be used for real-time messaging in your application.
+
+```bash
+gcloud pubsub topics create my-topic --project=CostCurve
+```
+
+9. **Google Cloud Functions**: Deploy a Google Cloud Function for your application. This will be used to handle background tasks in your application.
+
+```bash
+gcloud functions deploy my-function --runtime go113 --trigger-topic my-topic --project=CostCurve
+```
+
+10. **Google Cloud Scheduler**: Create a Google Cloud Scheduler job for your application. This will be used to schedule tasks in your application.
+
+```bash
+gcloud scheduler jobs create pubsub my-job --schedule "0 9 * * *" --topic my-topic --message-body "Hello, world!" --project=CostCurve
+```
+
+Remember, this is a very basic guide and doesn't include any error handling, data validation, or actual logic for your application. You'll need to implement those parts yourself.
