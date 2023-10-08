@@ -151,36 +151,87 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
       }
     }
 
-function createLoanChart (data) {
-    console.log('here is the loan data', data);
-    
-            let current_liabilities_labels = [];
-            let current_liabilities_datalabels = [];
-            let interest_labels = [];
-            let interest_datalabels = [];
+function createLoanChart () {
+    let mockData = {
+        current_liabilities: [
+            {date: 'Jan', amount: 1000},
+            {date: 'Feb', amount: 900},
+            {date: 'Mar', amount: 800},
+            {date: 'Apr', amount: 700},
+            {date: 'May', amount: 600},
+            {date: 'Jun', amount: 500},
+            {date: 'Jul', amount: 400},
+            {date: 'Aug', amount: 300},
+            {date: 'Sep', amount: 200},
+            {date: 'Oct', amount: 100},
+            {date: 'Nov', amount: 50},
+            {date: 'Dec', amount: 0}
+        ],
+        current_interest_payments: [
+            {date: 'Jan', amount: 100},
+            {date: 'Feb', amount: 90},
+            {date: 'Mar', amount: 80},
+            {date: 'Apr', amount: 70},
+            {date: 'May', amount: 60},
+            {date: 'Jun', amount: 50},
+            {date: 'Jul', amount: 40},
+            {date: 'Aug', amount: 30},
+            {date: 'Sep', amount: 20},
+            {date: 'Oct', amount: 10},
+            {date: 'Nov', amount: 5},
+            {date: 'Dec', amount: 0}
+        ],
+        reduced_liabilities: [
+          {date: 'Jan', amount: 1000},
+          {date: 'Feb', amount: 880},
+          {date: 'Mar', amount: 770},
+          {date: 'Apr', amount: 660},
+          {date: 'May', amount: 550},
+          {date: 'Jun', amount: 400},
+          {date: 'Jul', amount: 300},
+          {date: 'Aug', amount: 100},
+          {date: 'Sep', amount: 0},
+          {date: 'Oct', amount: 0},
+          {date: 'Nov', amount: 0},
+          {date: 'Dec', amount: 0}
+        ],
+        reduced_interest_payments: [
+            {date: 'Jan', amount: 50},
+            {date: 'Feb', amount: 45},
+            {date: 'Mar', amount: 40},
+            {date: 'Apr', amount: 35},
+            {date: 'May', amount: 30},
+            {date: 'Jun', amount: 25},
+            {date: 'Jul', amount: 20},
+            {date: 'Aug', amount: 15},
+            {date: 'Sep', amount: 10},
+            {date: 'Oct', amount: 5},
+            {date: 'Nov', amount: 2.5},
+            {date: 'Dec', amount: 0}
+        ]
+    };
 
-            let reduced_liabilities_labels = [];
-            let reduced_liabilities_datalabels = [];
-            let reduced_interest_labels = [];
-            let reduced_interest_datalabels = [];
-    
-            for(var i=0; i<data.current_liabilities.length; i++){
-                current_liabilities_labels[i] = data.current_liabilities[i].date;
-                current_liabilities_datalabels[i] = data.current_liabilities[i].amount;
-                interest_labels[i] = data.current_interest_payments[i].date;
-                interest_datalabels[i] = data.current_interest_payments[i].amount  
+    let current_liabilities_labels = [];
+    let current_liabilities_datalabels = [];
+    let interest_labels = [];
+    let interest_datalabels = [];
 
-                reduced_liabilities_labels[i] = data.reduced_liabilities[i].date;
-                reduced_liabilities_datalabels[i] = data.reduced_liabilities[i].amount;
-                reduced_interest_labels[i] = data.reduced_interest_payments[i].date;
-                reduced_interest_datalabels[i] = data.reduced_interest_payments[i].amount;
-            }
+    let reduced_liabilities_labels = [];
+    let reduced_liabilities_datalabels = [];
+    let reduced_interest_labels = [];
+    let reduced_interest_datalabels = [];
 
-                
-            for(var i=0; i<data.current_interest_payments.length; i++){
-                interest_labels[i] = data.current_interest_payments[i].date;
-                interest_datalabels[i] = data.current_interest_payments[i].amount 
-            }
+    for(var i=0; i<mockData.current_liabilities.length; i++){
+        current_liabilities_labels[i] = mockData.current_liabilities[i].date;
+        current_liabilities_datalabels[i] = mockData.current_liabilities[i].amount;
+        interest_labels[i] = mockData.current_interest_payments[i].date;
+        interest_datalabels[i] = mockData.current_interest_payments[i].amount;
+
+        reduced_liabilities_labels[i] = mockData.reduced_liabilities[i].date;
+        reduced_liabilities_datalabels[i] = mockData.reduced_liabilities[i].amount;
+        reduced_interest_labels[i] = mockData.reduced_interest_payments[i].date;
+        reduced_interest_datalabels[i] = mockData.reduced_interest_payments[i].amount;
+    }
 
     var multiAreaData = {
         labels: current_liabilities_labels,
@@ -200,23 +251,6 @@ function createLoanChart (data) {
             borderWidth: 1,
             fill: true
           }
-        //   ,
-        //   {
-        //     label: 'Interest',
-        //     data: interest_datalabels,
-        //     borderColor: ['rgba(255, 99, 132, 0.5)'],
-        //     backgroundColor: ['rgba(255, 99, 132, 0.5)'],
-        //     borderWidth: 1,
-        //     fill: true
-        //   },
-        //   {
-        //     label: 'Reduced Interest',
-        //     data: reduced_interest_datalabels,
-        //     borderColor: ['rgba(255, 99, 132, 0.5)'],
-        //     backgroundColor: ['rgba(245, 32, 11, 0.5)'],
-        //     borderWidth: 1,
-        //     fill: true
-        //   }
         ]
       };
 
@@ -357,23 +391,30 @@ function createLoanChart (data) {
 //     }
 // }
 
+
+
+
+
       function createDailyExpenseChart (data) {
           let labels = [];
           let datalabels = [];
           let spendwiseLabels = []
 
+          console.log('HERE IS DATA', data)
+
         for(var i=0; i<data.daily_expenses.length; i++){
             labels[i] = data.daily_expenses[i].date;
             datalabels[i] = data.daily_expenses[i].amount 
             spendwiseLabels[i] = 0;
+
+            console.log('here are the ###', spendwiseLabels, datalabels )
         }
-        for(var i = data.daily_expenses.length; i< data.predictions.length; i++) {
+        for(var i = 0; i< data.predictions.length; i++) {
             labels[i] = data.predictions[i].date;
-            datalabels[i] = data.predictions[i].amount*21
-            spendwiseLabels[i] = data.predictions[i].amount*17*0.7
+            spendwiseLabels[i] = data.predictions[i].amount
         }
 
-        console.log('here are the labels', labels, datalabels )
+        console.log('here are the labels', spendwiseLabels, datalabels )
       var multiAreaData = {
         labels: labels,
         datasets: [
@@ -432,6 +473,33 @@ function createLoanChart (data) {
       }
 
     }
+
+    function createDailyExpenseChart2(data) {
+      // Your code here to render the chart using the provided data
+
+      var mockData = {
+        daily_expenses: [
+            { date: "2022-01-01", amount: 100 },
+            { date: "2022-01-02", amount: 200 },
+            { date: "2022-01-03", amount: 300 }
+        ],
+        predictions: [
+            { date: "2022-01-01", amount: 70 },
+            { date: "2022-01-02", amount: 150 },
+            { date: "2022-01-03", amount: 200 }
+        ]
+    };
+
+      console.log('///////0', mockData.daily_expenses)
+
+      createDailyExpenseChart(mockData);
+
+    }
+
+    
+    
+
+
       var responseElt = document.getElementById("responseJSON");
       var infoElt = document.getElementById("infoJSON");
       var statusElt = document.getElementById("status");
@@ -616,67 +684,191 @@ function createLoanChart (data) {
            $scope.dailyExpenses();
             $scope.monthlyExpenses();
             $scope.savingsRecommendationsTable();
+            $scope.mockSavingsRecommendationsTable();
+            $scope.getSavings(); 
+            
+
 
     };
     notifier.addListener(update);
     
 
-    $scope.getLoanInfo = function() {
+    // $scope.getLoanInfo = function() {
         
-        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/get_liability_details?transactions=3')
-        .success(function (data, status) {
-            // console.log('1', data)
-            $scope.loanData = data.details;
-            console.log('Loan Data', data, $scope.loanData);
-            createLoanChart(data);
-            }).error(function (data, status) {
-            console.log('There was a getting loan info' + JSON.stringify(data) + JSON.stringify(status));
-           })
+    //     $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/get_liability_details?transactions=3')
+    //     .success(function (data, status) {
+    //         // console.log('1', data)
+    //         $scope.loanData = data.details;
+    //         console.log('Loan Data', data, $scope.loanData);
+    //         createLoanChart(data);
+    //         }).error(function (data, status) {
+    //         console.log('There was a getting loan info' + JSON.stringify(data) + JSON.stringify(status));
+    //        })
+    // }
+
+    $scope.getLoanInfo = function() {
+        var mockLoanData = {
+            "loan_info": {
+                "origination_principal_amount": 5000,
+                "guarantor": "Bank of America",
+                "next_payment_due_date": "2022-12-01"
+            },
+            "details": "Loan details"
+        };
+        $scope.loanData = mockLoanData;
+        console.log('Mock Loan Data', mockLoanData, $scope.loanData);
+        createLoanChart(mockLoanData);
     }
+
+    $scope.getSavings = function() {
+        var mockSavingsData = {
+            "savings_info": {
+                "total_savings": 10000,
+                "monthly_savings": 500,
+                "daily_savings": 20
+            },
+            "details": "Savings details"
+        };
+        $scope.savingsData = mockSavingsData;
+        console.log('Mock Savings Data', mockSavingsData, $scope.savingsData);
+    }
+
+    
+    $scope.getLocalRecommendations = function() {
+
+      getLocalRecommendations()
+        
+        // $http.get('https://spendwise-business-search.herokuapp.com/houndify-results?query="find%20cheap%20restaurants%20near%20me%20"')
+        // .success(function (data, status) {
+        //     console.log('business search', data.AllResults[0].TemplateData.Items, JSON.stringify(status));
+        //     $scope.alternativeBusiness = data.AllResults[0].TemplateData.Items;
+        //     }).error(function (data, status) {
+        //     console.log('There was a problem posting your information' + JSON.stringify(data) + JSON.stringify(status));
+        //    })
+    }
+
 
     $scope.getLocalRecommendations = function() {
-        
-        $http.get('https://spendwise-business-search.herokuapp.com/houndify-results?query="find%20cheap%20restaurants%20near%20me%20"')
-        .success(function (data, status) {
-            console.log('business search', data.AllResults[0].TemplateData.Items, JSON.stringify(status));
-            $scope.alternativeBusiness = data.AllResults[0].TemplateData.Items;
-            }).error(function (data, status) {
-            console.log('There was a problem posting your information' + JSON.stringify(data) + JSON.stringify(status));
-           })
+        var mockBusinessData = [
+            {
+                "TemplateData": {
+                    "Title": "Healthy Harvest",
+                    "BodyText": "123 Green St, Anytown",
+                    "Image": {
+                        "URL": "https://www.centralvalleycf.org/wp-content/uploads/2020/09/Healthy-Harvest-ENG-logo.jpg"
+                    }
+                }
+            },
+            {
+                "TemplateData": {
+                    "Title": "Fit & Fresh",
+                    "BodyText": "456 Oak St, Anytown",
+                    "Image": {
+                        "URL": "data:image/png;base64,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"
+                    }
+                }
+            },
+            {
+                "TemplateData": {
+                    "Title": "Lean Cuisine Cafe",
+                    "BodyText": "789 Pine St, Anytown",
+                    "Image": {
+                        "URL": "https://www.madewithnestle.ca/sites/default/files/2021-08/Lean%20Cuisine%20New%20Logo.png"
+                    }
+                }
+            }
+        ];
+        console.log('Mock Business Data', mockBusinessData);
+        $scope.alternativeBusiness = mockBusinessData;
     }
 
+
+    // $scope.monthlyExpenses = function() {
+    //     $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/monthly_totals?months=6')
+    //     .success(function (data, status) {
+    //         console.log('monthly expenses', data);
+    //         $scope.monthlyExpense = data;
+    //         }).error(function (data, status) {
+    //         console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+    //        })
+    // }
+
     $scope.monthlyExpenses = function() {
-        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/monthly_totals?months=6')
-        .success(function (data, status) {
-            console.log('monthly expenses', data);
-            $scope.monthlyExpense = data;
-            }).error(function (data, status) {
-            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
-           })
+        var mockData = {
+            "1": 500,
+            "2": 600,
+            "3": 700,
+            "4": 800,
+            "5": 900,
+            "6": 1000,
+            "7": 1100,
+            "8": 1200,
+            "9": 1300,
+            "10": 1400,
+            "11": 1500,
+            "12": 1600
+        };
+        const d = new Date();
+        let month = d.getMonth()+1;
+        console.log('monthly expenses', mockData[month], month);
+        $scope.monthlyExpense = mockData[month];
     }
 
     $scope.dailyExpenses = function() {
+
+      createDailyExpenseChart2()
         
-        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/spending_data?days=20')
-        .success(function (data, status) {
-            console.log('daily expense', data);
-            $scope.dailyExpense = data;
-            createDailyExpenseChart($scope.dailyExpense)
-            }).error(function (data, status) {
-            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
-           })
+        // $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/spending_data?days=20')
+        // .success(function (data, status) {
+        //     console.log('daily expense', data);
+        //     $scope.dailyExpense = data;
+        //     createDailyExpenseChart($scope.dailyExpense)
+        //     }).error(function (data, status) {
+        //     console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+        //    })
     }
 
     $scope.savingsRecommendationsTable = function() {
-        $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/savings_reccs')
-        .success(function (data, status) {
-            console.log('savings recommendations table expense', data.data);
-            $scope.savingsRecommendationsTable = data.data;
-            $scope.savingsRecommendationsTable
+        // $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/savings_reccs')
+        // .success(function (data, status) {
+        //     console.log('savings recommendations table expense', data.data);
+        //     $scope.savingsRecommendationsTable = data.data;
+        //     $scope.savingsRecommendationsTable
 
-            }).error(function (data, status) {
-            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
-           })
+        //     }).error(function (data, status) {
+        //     console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+        //    })
+    }
+
+    $scope.mockSavingsRecommendationsTable = function() {
+        var mockData = {
+            "1": {
+                "vendor": "Local Diner",
+                "category": "Dining",
+                "expected_expense": 400,
+                "savings": 200
+            },
+            "2": {
+                "vendor": "Expensive Grocer",
+                "category": "Groceries",
+                "expected_expense": 300,
+                "savings": 150
+            },
+            "3": {
+                "vendor": "Streaming Service",
+                "category": "Subscriptions",
+                "expected_expense": 150,
+                "savings": 100
+            },
+            "4": {
+                "vendor": "Utility Company",
+                "category": "Utilities",
+                "expected_expense": 100,
+                "savings": 50
+            }
+        };
+        console.log('mock savings recommendations', mockData);
+        $scope.savingsRecommendationsTable = mockData;
     }
 
     $scope.search = function(string) {

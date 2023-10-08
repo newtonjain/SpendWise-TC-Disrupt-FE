@@ -10,7 +10,11 @@
     "debug": "~2.6.9",
     "express": "^4.18.2",
     "http-errors": "~1.6.3",
+    "ionic": "^5.4.16",
     "jade": "^0.31.2",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "@ionic/v1-toolkit": "3.2.20"
   }
 }

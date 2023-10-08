@@ -13,7 +13,7 @@
             <div class="col-lg-4 d-flex grid-margin stretch-card">
               <div class="card sale-diffrence-border">
                 <div class="card-body">
-                  <h2 class="text-dark mb-2 font-weight-bold">{{monthlyExpense[0].total}}</h2>
+                  <h2 class="text-dark mb-2 font-weight-bold">${{monthlyExpense}}</h2>
                   <h4 class="card-title mb-2">Monthly Expenses</h4>
                   <small class="text-muted">Sept 2019</small>
                 </div>
@@ -22,7 +22,7 @@
             <div class="col-lg-4 d-flex grid-margin stretch-card">
               <div class="card bg-success">
                 <div class="card-body text-white">
-                  <h3 class="font-weight-bold mb-3">$248</h3>
+                  <h3 class="font-weight-bold mb-3">${{savingsData.savings_info.total_savings}}</h3>
                   <div class="progress mb-3">
                     <div class="progress-bar  bg-warning" role="progressbar" style="width: 40%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
@@ -144,13 +144,13 @@
               <tbody>
                 <tr ng-repeat="item in savingsRecommendationsTable">
                   <td class="py-1">
-                    <img src="{{item.url}}" alt="image"/>
+                    {{item.vendor}}
                   </td>
                   <td>
                    {{item.category}}
                   </td>
                   <td>
-                    {{item.expected}}
+                    {{item.expected_expense}}
                   </td>
                   <td>
                     {{item.savings}}

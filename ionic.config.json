@@ -1,6 +1,5 @@
 {
   "name": "chefy-users",
-  "app_id": "ffd2be4e",
   "integrations": {},
   "type": "ionic1",
   "watchPatterns": [
@@ -8,5 +7,6 @@
     "www/**/*",
     "!www/lib/**/*",
     "!www/**/*.map"
-  ]
+  ],
+  "id": "ffd2be4e"
 }
