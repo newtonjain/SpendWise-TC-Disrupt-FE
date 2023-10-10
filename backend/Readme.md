@@ -3,7 +3,19 @@
 This is a basic Go application for predicting prices.
 
 ## Getting Started
+To run the project locally, follow these steps:
 
+1. **Install Go**: If you haven't already, download and install Go from the official website.
+
+2. **Clone the repository**: Clone the repository to your local machine using the command `git clone https://github.com/yourusername/SpendWise-TC-Disrupt-FE.git`.
+
+3. **Navigate to the backend directory**: Use the command `cd SpendWise-TC-Disrupt-FE/backend` to navigate to the backend directory.
+
+4. **Download dependencies**: Run the command `go mod download` to download the necessary dependencies.
+
+5. **Run the application**: Finally, run the application using the command `go run pricepredictor.go`. The application should now be running on `localhost:8080`.
+
+To deploy the project to GCP, follow these steps:
 1. **Create a Go project**: Start by creating a new directory for your project and initializing it as a Go module. Then, create a `main.go` file with the basic structure of your application.
 
 2. **Google Cloud Deployment**: You can deploy your Go application to Google Cloud using Google Cloud Run or Google App Engine.
