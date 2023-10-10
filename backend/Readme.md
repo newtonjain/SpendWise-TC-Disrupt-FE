@@ -11,7 +11,7 @@ To run the project locally, follow these steps:
 
 3. **Navigate to the backend directory**: Use the command `cd SpendWise-TC-Disrupt-FE/backend` to navigate to the backend directory.
 
-4. **Download dependencies**: Run the command `go mod download` to download the necessary dependencies.
+4. **Download dependencies**: Run the command `go mod download` to download the necessary dependencies.For example, `go get -v -u github.com/gorilla/mux`
 
 5. **Run the application**: Finally, run the application using the command `go run pricepredictor.go`. The application should now be running on `localhost:8080`.
 
