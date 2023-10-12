@@ -676,16 +676,13 @@ function createLoanChart () {
         // $scope.files = method.all();
         // console.log('here are the files ', $scope.files );
 
-
-
-
-           $scope.getLoanInfo();
-            $scope.getLocalRecommendations(); 
-           $scope.dailyExpenses();
-            $scope.monthlyExpenses();
-            $scope.savingsRecommendationsTable();
-            $scope.mockSavingsRecommendationsTable();
-            $scope.getSavings(); 
+        $scope.getOffers(); 
+        $scope.monthlyExpenses();
+        $scope.dailyExpenses();
+        $scope.getLoanInfo();
+        $scope.getSavings(); 
+        $scope.savingsRecommendationsTable();
+        $scope.mockSavingsRecommendationsTable();
             
 
 
@@ -693,126 +690,205 @@ function createLoanChart () {
     notifier.addListener(update);
     
 
-    // $scope.getLoanInfo = function() {
+    $scope.getLoanInfo = function() {
         
-    //     $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/get_liability_details?transactions=3')
-    //     .success(function (data, status) {
-    //         // console.log('1', data)
-    //         $scope.loanData = data.details;
-    //         console.log('Loan Data', data, $scope.loanData);
-    //         createLoanChart(data);
-    //         }).error(function (data, status) {
-    //         console.log('There was a getting loan info' + JSON.stringify(data) + JSON.stringify(status));
-    //        })
+        $http.get('https://cost-curve-ss54heax2q-uc.a.run.app/deltaMargin')
+        .success(function (data, status) {
+            // console.log('1', data)
+            console.log('Loan Data', data, $scope.loanData);
+            $scope.loanData  = data.Predicted_Delta_Margin;
+
+            createLoanChart()
+          
+            // createLoanChart(data);
+            }).error(function (data, status) {
+            console.log('There was a getting loan info' + JSON.stringify(data) + JSON.stringify(status));
+           })
+    }
+
+    // $scope.getLoanInfo = function() {
+    //     var mockLoanData = {
+    //         "loan_info": {
+    //             "origination_principal_amount": 5000,
+    //             "guarantor": "Bank of America",
+    //             "next_payment_due_date": "2022-12-01"
+    //         },
+    //         "details": "Loan details"
+    //     };
+    //     $scope.loanData = mockLoanData;
+    //     console.log('Mock Loan Data', mockLoanData, $scope.loanData);
+    //     createLoanChart(mockLoanData);
     // }
 
-    $scope.getLoanInfo = function() {
-        var mockLoanData = {
-            "loan_info": {
-                "origination_principal_amount": 5000,
-                "guarantor": "Bank of America",
-                "next_payment_due_date": "2022-12-01"
-            },
-            "details": "Loan details"
-        };
-        $scope.loanData = mockLoanData;
-        console.log('Mock Loan Data', mockLoanData, $scope.loanData);
-        createLoanChart(mockLoanData);
-    }
 
     $scope.getSavings = function() {
-        var mockSavingsData = {
-            "savings_info": {
-                "total_savings": 10000,
-                "monthly_savings": 500,
-                "daily_savings": 20
-            },
-            "details": "Savings details"
-        };
-        $scope.savingsData = mockSavingsData;
-        console.log('Mock Savings Data', mockSavingsData, $scope.savingsData);
-    }
-
-    
-    $scope.getLocalRecommendations = function() {
-
-      getLocalRecommendations()
-        
-        // $http.get('https://spendwise-business-search.herokuapp.com/houndify-results?query="find%20cheap%20restaurants%20near%20me%20"')
-        // .success(function (data, status) {
-        //     console.log('business search', data.AllResults[0].TemplateData.Items, JSON.stringify(status));
-        //     $scope.alternativeBusiness = data.AllResults[0].TemplateData.Items;
-        //     }).error(function (data, status) {
-        //     console.log('There was a problem posting your information' + JSON.stringify(data) + JSON.stringify(status));
-        //    })
+        $http.get('https://cost-curve-ss54heax2q-uc.a.run.app/totalSavings')
+        .success(function (data, status) {
+            console.log('total savings', data);
+            $scope.savingsData = data.Predicted_Savings;
+             console.log('Mock Savings Data', data, $scope.savingsData);
+            }).error(function (data, status) {
+            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+           })
     }
 
 
-    $scope.getLocalRecommendations = function() {
-        var mockBusinessData = [
-            {
-                "TemplateData": {
-                    "Title": "Healthy Harvest",
-                    "BodyText": "123 Green St, Anytown",
-                    "Image": {
-                        "URL": "https://www.centralvalleycf.org/wp-content/uploads/2020/09/Healthy-Harvest-ENG-logo.jpg"
-                    }
-                }
-            },
-            {
-                "TemplateData": {
-                    "Title": "Fit & Fresh",
-                    "BodyText": "456 Oak St, Anytown",
-                    "Image": {
-                        "URL": "data:image/png;base64,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"
-                    }
-                }
-            },
-            {
-                "TemplateData": {
-                    "Title": "Lean Cuisine Cafe",
-                    "BodyText": "789 Pine St, Anytown",
-                    "Image": {
-                        "URL": "https://www.madewithnestle.ca/sites/default/files/2021-08/Lean%20Cuisine%20New%20Logo.png"
-                    }
-                }
-            }
-        ];
-        console.log('Mock Business Data', mockBusinessData);
-        $scope.alternativeBusiness = mockBusinessData;
-    }
-
-
-    // $scope.monthlyExpenses = function() {
-    //     $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/monthly_totals?months=6')
-    //     .success(function (data, status) {
-    //         console.log('monthly expenses', data);
-    //         $scope.monthlyExpense = data;
-    //         }).error(function (data, status) {
-    //         console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
-    //        })
+    // $scope.getSavings = function() {
+    //     var mockSavingsData = {
+    //         "savings_info": {
+    //             "total_savings": 10000,
+    //             "monthly_savings": 500,
+    //             "daily_savings": 20
+    //         },
+    //         "details": "Savings details"
+    //     };
+    //     $scope.savingsData = mockSavingsData;
+    //     console.log('Mock Savings Data', mockSavingsData, $scope.savingsData);
     // }
 
-    $scope.monthlyExpenses = function() {
-        var mockData = {
-            "1": 500,
-            "2": 600,
-            "3": 700,
-            "4": 800,
-            "5": 900,
-            "6": 1000,
-            "7": 1100,
-            "8": 1200,
-            "9": 1300,
-            "10": 1400,
-            "11": 1500,
-            "12": 1600
-        };
-        const d = new Date();
-        let month = d.getMonth()+1;
-        console.log('monthly expenses', mockData[month], month);
-        $scope.monthlyExpense = mockData[month];
+    
+    $scope.getOffers = function() {
+    
+        $http.get('https://cost-curve-ss54heax2q-uc.a.run.app/seasonalItems')
+        .success(function (data, status) {
+          
+          var newdata = [
+            {
+              "Combo_Name": "Combo 1",
+              "Items": [
+                {
+                  "Item_Description": "Gulab Jamun",
+                  "Discount_Percentage": 1.96
+                },
+                {
+                  "Item_Description": "Paneer Tikka",
+                  "Discount_Percentage": -6.60
+                }
+              ],
+              "Combo_Discount": -2.32
+            },
+            {
+              "Combo_Name": "Combo 2",
+              "Items": [
+                {
+                  "Item_Description": "Masala Dosa",
+                  "Discount_Percentage": 1.15
+                },
+                {
+                  "Item_Description": "Rogan Josh",
+                  "Discount_Percentage": -6.40
+                }
+              ],
+              "Combo_Discount": -2.63
+            },
+            {
+              "Combo_Name": "Combo 3",
+              "Items": [
+                {
+                  "Item_Description": "Samosa",
+                  "Discount_Percentage": 0.69
+                },
+                {
+                  "Item_Description": "Butter Chicken",
+                  "Discount_Percentage": -5.84
+                }
+              ],
+              "Combo_Discount": -2.57
+            }
+          ]
+          
+          
+          console.log('seasonal items $$$$$', newdata);
+          $scope.seasonalItems = newdata;
+            }).error(function (data, status) {
+            console.log('There was a problem posting your information' + JSON.stringify(data) + JSON.stringify(status));
+           })
     }
+
+
+    // $scope.getOffers = function() {
+    //     var mockBusinessData = [
+    //         {
+    //             "TemplateData": {
+    //                 "Title": "Healthy Harvest",
+    //                 "BodyText": "123 Green St, Anytown",
+    //                 "Image": {
+    //                     "URL": "https://www.centralvalleycf.org/wp-content/uploads/2020/09/Healthy-Harvest-ENG-logo.jpg"
+    //                 }
+    //             }
+    //         },
+    //         {
+    //             "TemplateData": {
+    //                 "Title": "Fit & Fresh",
+    //                 "BodyText": "456 Oak St, Anytown",
+    //                 "Image": {
+    //                     "URL": "data:image/png;base64,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"
+    //                 }
+    //             }
+    //         },
+    //         {
+    //             "TemplateData": {
+    //                 "Title": "Lean Cuisine Cafe",
+    //                 "BodyText": "789 Pine St, Anytown",
+    //                 "Image": {
+    //                     "URL": "https://www.madewithnestle.ca/sites/default/files/2021-08/Lean%20Cuisine%20New%20Logo.png"
+    //                 }
+    //             }
+    //         }
+    //     ];
+    //     console.log('Mock Business Data', mockBusinessData);
+    //     $scope.alternativeBusiness = mockBusinessData;
+    // }
+
+
+    $scope.monthlyExpenses = function() {
+        $http.get('https://cost-curve-ss54heax2q-uc.a.run.app/monthlyExpense')
+        .success(function (data, status) {
+            console.log('monthly expenses', data);
+
+            
+            var expenses = {"Ingredients":2000,"Miscellaneous":500,"Rent":5000,"Salaries":8000,"Utilities":1500};
+            var totalExpenses = Object.values(expenses).reduce((a, b) => a + b, 0);
+            console.log('Total Expenses', totalExpenses);
+
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+            $scope.today = `${monthNames[mm - 1]} ${yyyy}`;
+            console.log('Today\'s Date', $scope.today);
+            $scope.loanData = data.Predicted_Delta_Margin;
+
+
+            $scope.monthlyExpense = totalExpenses;
+            }).error(function (data, status) {
+            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+           })
+    }
+
+    // $scope.monthlyExpenses = function() {
+    //     var mockData = {
+    //         "1": 500,
+    //         "2": 600,
+    //         "3": 700,
+    //         "4": 800,
+    //         "5": 900,
+    //         "6": 1000,
+    //         "7": 1100,
+    //         "8": 1200,
+    //         "9": 1300,
+    //         "10": 1400,
+    //         "11": 1500,
+    //         "12": 1600
+    //     };
+    //     const d = new Date();
+    //     let month = d.getMonth()+1;
+    //     console.log('monthly expenses', mockData[month], month);
+    //     $scope.monthlyExpense = mockData[month];
+    // }
 
     $scope.dailyExpenses = function() {
 
@@ -829,15 +905,37 @@ function createLoanChart () {
     }
 
     $scope.savingsRecommendationsTable = function() {
-        // $http.get('http://spendwise-lb-739704597.us-east-2.elb.amazonaws.com/savings_reccs')
-        // .success(function (data, status) {
-        //     console.log('savings recommendations table expense', data.data);
-        //     $scope.savingsRecommendationsTable = data.data;
-        //     $scope.savingsRecommendationsTable
+        $http.get('https://cost-curve-ss54heax2q-uc.a.run.app/seasonalItems')
+        .success(function (data, status) {
+          
+          var data2 = [
+            {
+              "TemplateData": {
+                "BodyText": "Predicted Price: 15.99, Expected Sales: 150",
+                "Image": {
+                  "URL": "https://imageupload.io/ib/7gdukYHCAkjy0aH_1697095138.png"
+                },
+                "Title": "Saag"
+              }
+            },
+            {
+              "TemplateData": {
+                "BodyText": "Predicted Price: 2.99, Expected Sales: 200",
+                "Image": {
+                  "URL": "https://static.toiimg.com/thumb/56097918.cms?width=1200&height=900"
+                },
+                "Title": "Makki ki Roti"
+              }
+            }
+          ]
+          
+          $scope.seasonal_Optimized_Items = data;
+          console.log('Seasonal Optimized Items', data, $scope.seasonal_Optimized_Items);
+            $scope.savingsRecommendationsTable
 
-        //     }).error(function (data, status) {
-        //     console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
-        //    })
+            }).error(function (data, status) {
+            console.log('There was a problem' + JSON.stringify(data) + JSON.stringify(status));
+           })
     }
 
     $scope.mockSavingsRecommendationsTable = function() {

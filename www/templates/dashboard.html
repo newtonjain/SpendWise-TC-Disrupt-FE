@@ -1,9 +1,9 @@
 
 <ion-view title="Dashboard" id="page2">
     <ion-nav-buttons side="right">
-      <div class="imageCenter"> Sumbul &nbsp &nbsp</div>
+      <div class="imageCenter"> User &nbsp &nbsp</div>
       
-        <img class="img-sm2 rounded-circle" src="https://uncubed.com/wp-content/uploads/2017/08/IMG_6605-300x294.jpg" alt="image" class="profile-pic">    
+        <img class="img-sm2 rounded-circle" src="https://imageupload.io/ib/HY4WI4fB8lFKenR_1697093752.png" alt="image" class="profile-pic">    
       </ion-nav-buttons>
       <!-- <button class="button button-outline  button-assertive" ng-show="uploadfilecard" ng-click="showCard()"> Hide card  <i class="mdi mdi-close-circle-outline"></i></button> -->
   <ion-content padding="true" class="has-header" overflow-scroll="true" style="background-color: #f0f3f6">
@@ -15,14 +15,14 @@
                 <div class="card-body">
                   <h2 class="text-dark mb-2 font-weight-bold">${{monthlyExpense}}</h2>
                   <h4 class="card-title mb-2">Monthly Expenses</h4>
-                  <small class="text-muted">Sept 2019</small>
+                  <small class="text-muted">{{today}}</small>
                 </div>
               </div>
             </div>
             <div class="col-lg-4 d-flex grid-margin stretch-card">
               <div class="card bg-success">
                 <div class="card-body text-white">
-                  <h3 class="font-weight-bold mb-3">${{savingsData.savings_info.total_savings}}</h3>
+                  <h3 class="font-weight-bold mb-3">${{savingsData}}</h3>
                   <div class="progress mb-3">
                     <div class="progress-bar  bg-warning" role="progressbar" style="width: 40%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
@@ -33,9 +33,9 @@
             <div class="col-lg-4 d-flex grid-margin stretch-card">
               <div class="card sale-visit-statistics-border">
                 <div class="card-body">
-                  <h2 class="text-dark mb-2 font-weight-bold">${{loanData.loan_info.origination_principal_amount}}</h2>
-                  <h4 class="card-title mb-2">{{loanData.loan_info.guarantor}}</h4>
-                  <small class="text-muted">Next Payment: {{loanData.loan_info.next_payment_due_date}}</small>
+                  <h2 class="text-dark mb-2 font-weight-bold">${{loanData}}</h2>
+                  <h4 class="card-title mb-2">Predicted Margins</h4>
+                  <!-- <small class="text-muted"> {{today}}</small> -->
                 </div>
               </div>
             </div>
@@ -119,12 +119,19 @@
     <div class=" col-lg-6">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Savings Recommendations Table</h4>
+          <h4 class="card-title">Seasonal Optimized Items</h4>
           <p class="card-description">
-            <code>Follow these recommendations for today</code>
+            <code>Follow these recommendations for increasing revenue</code>
           </p>
-          <div class="table-responsive">
-            <table class="table table-striped">
+          <div ng-repeat="items in seasonal_Optimized_Items  | limitTo : 7" class="d-flex align-items-center pb-3 border-bottom">
+            <img class="img-sm rounded-circle" src="{{items.TemplateData.Image.URL}}" alt="profile">
+            <div class="ml-3">
+              <h6 class="mb-1">{{items.TemplateData.Title}}</h6>
+              <small class="mb-1">{{items.TemplateData.BodyText}}</small>
+            </div>
+            </div>
+          <!-- <div class="table-responsive"> -->
+            <!-- <table class="table table-striped">
               <thead>
                 <tr>
                   <th>
@@ -157,22 +164,22 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
-          </div>
+            </table> -->
+          <!-- </div> -->
         </div>
       </div>
     </div>
     <div class=" col-lg-6  grid-margin stretch-card">
         <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Recommended</h4>
-          <div ng-repeat="business in alternativeBusiness  | limitTo : 7" class="d-flex align-items-center pb-3 border-bottom">
-            <img class="img-sm rounded-circle" src="{{business.TemplateData.Image.URL}}" alt="profile">
+          <h4 class="card-title">Combos</h4>
+          <div ng-repeat="item in seasonalItems  | limitTo : 7" class="d-flex align-items-center pb-3 border-bottom">
+            <!-- <img class="img-sm rounded-circle" src="{{seasonalItems.Image.URL}}" alt="profile"> -->
+            <div>{{item.Combo_Discount}}%</div>
             <div class="ml-3">
-              <h6 class="mb-1">{{business.TemplateData.Title}}</h6>
-              <small class="text-muted mb-0"><i class="mdi mdi-map-marker mr-1"></i>{{business.TemplateData.BodyText}}</small>
+              <h6 class="mb-1">{{item.Items[0].Item_Description}} + {{item.Items[1].Item_Description}}</h6>
+              <small class="text-muted mb-0">{{item.Combo_Name}}</small>
             </div>
-            <i class="mdi mdi-check-circle-outline font-weight-bold ml-auto px-1 py-1 text-info mdi-24px"></i>
           </div>
         </div>
           </div>
