@@ -87,7 +87,10 @@
       <div class=" col-lg-6  grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Liabilities trend</h4>
+            <h4 class="card-title">Dynamic Pricing Model</h4>
+            <label for="itemList">Choose an item:</label>
+            <select id="itemList" ng-model="selectedItem" ng-options="item for item in itemsList" ng-change="itemSelected(selectedItem)" ng-init="selectedItem='Butter Chicken'">
+            </select>
             <canvas id="areachart-loan"></canvas>
           </div>
         </div>
@@ -96,7 +99,7 @@
       <div class=" col-lg-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Spending trend</h4>
+            <h4 class="card-title">Revenue trend</h4>
             <canvas id="areachart-multi"></canvas>
           </div>
         </div>

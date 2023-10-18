@@ -151,66 +151,10 @@ function ($scope, $stateParams, backend, location, notifier,$http, FileUploader,
       }
     }
 
-function createLoanChart () {
-    let mockData = {
-        current_liabilities: [
-            {date: 'Jan', amount: 1000},
-            {date: 'Feb', amount: 900},
-            {date: 'Mar', amount: 800},
-            {date: 'Apr', amount: 700},
-            {date: 'May', amount: 600},
-            {date: 'Jun', amount: 500},
-            {date: 'Jul', amount: 400},
-            {date: 'Aug', amount: 300},
-            {date: 'Sep', amount: 200},
-            {date: 'Oct', amount: 100},
-            {date: 'Nov', amount: 50},
-            {date: 'Dec', amount: 0}
-        ],
-        current_interest_payments: [
-            {date: 'Jan', amount: 100},
-            {date: 'Feb', amount: 90},
-            {date: 'Mar', amount: 80},
-            {date: 'Apr', amount: 70},
-            {date: 'May', amount: 60},
-            {date: 'Jun', amount: 50},
-            {date: 'Jul', amount: 40},
-            {date: 'Aug', amount: 30},
-            {date: 'Sep', amount: 20},
-            {date: 'Oct', amount: 10},
-            {date: 'Nov', amount: 5},
-            {date: 'Dec', amount: 0}
-        ],
-        reduced_liabilities: [
-          {date: 'Jan', amount: 1000},
-          {date: 'Feb', amount: 880},
-          {date: 'Mar', amount: 770},
-          {date: 'Apr', amount: 660},
-          {date: 'May', amount: 550},
-          {date: 'Jun', amount: 400},
-          {date: 'Jul', amount: 300},
-          {date: 'Aug', amount: 100},
-          {date: 'Sep', amount: 0},
-          {date: 'Oct', amount: 0},
-          {date: 'Nov', amount: 0},
-          {date: 'Dec', amount: 0}
-        ],
-        reduced_interest_payments: [
-            {date: 'Jan', amount: 50},
-            {date: 'Feb', amount: 45},
-            {date: 'Mar', amount: 40},
-            {date: 'Apr', amount: 35},
-            {date: 'May', amount: 30},
-            {date: 'Jun', amount: 25},
-            {date: 'Jul', amount: 20},
-            {date: 'Aug', amount: 15},
-            {date: 'Sep', amount: 10},
-            {date: 'Oct', amount: 5},
-            {date: 'Nov', amount: 2.5},
-            {date: 'Dec', amount: 0}
-        ]
-    };
+function createLoanChart (mockData) {
 
+  console.log("3########", mockData)
+    
     let current_liabilities_labels = [];
     let current_liabilities_datalabels = [];
     let interest_labels = [];
@@ -224,19 +168,15 @@ function createLoanChart () {
     for(var i=0; i<mockData.current_liabilities.length; i++){
         current_liabilities_labels[i] = mockData.current_liabilities[i].date;
         current_liabilities_datalabels[i] = mockData.current_liabilities[i].amount;
-        interest_labels[i] = mockData.current_interest_payments[i].date;
-        interest_datalabels[i] = mockData.current_interest_payments[i].amount;
 
         reduced_liabilities_labels[i] = mockData.reduced_liabilities[i].date;
         reduced_liabilities_datalabels[i] = mockData.reduced_liabilities[i].amount;
-        reduced_interest_labels[i] = mockData.reduced_interest_payments[i].date;
-        reduced_interest_datalabels[i] = mockData.reduced_interest_payments[i].amount;
     }
 
     var multiAreaData = {
         labels: current_liabilities_labels,
         datasets: [{
-            label: 'Debt',
+            label: 'Item 1 Original Price',
             data: current_liabilities_datalabels,
             borderColor: ['rgba(255,165,0, 0.5)'],
             backgroundColor: ['rgba(54, 162, 235, 0.5)'],
@@ -244,7 +184,7 @@ function createLoanChart () {
             fill: true
           },
           {
-            label: 'Savewise Debt',
+            label: 'Item 1 Predicted Price',
             data: reduced_liabilities_datalabels,
             borderColor: ['rgba(50,205,50, 0.5)'],
             backgroundColor: ['rgba(50,205,50, 0.5)'],
@@ -253,6 +193,17 @@ function createLoanChart () {
           }
         ]
       };
+
+    var multiAreaOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
 
       var multiAreaOptions = {
         plugins: {
@@ -269,6 +220,9 @@ function createLoanChart () {
           xAxes: [{
             gridLines: {
               display: false
+            },
+            ticks: {
+              beginAtZero: true
             }
           }],
           yAxes: [{
@@ -288,111 +242,6 @@ function createLoanChart () {
         });
       }
     }
-
-//     {
-
-//     var supportTrackerData = {
-//         labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", ],
-//         datasets: [{
-//             label: 'New Tickets',
-//             data: [640, 750, 500, 400, 1200, 650, 550, 450, 400],
-//             backgroundColor: [
-//                 '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', 
-//             ],
-//             borderColor: [
-//                 '#464dee', '#464dee', '#464dee', '#464dee',  '#464dee', '#464dee', '#464dee', '#464dee', '#464dee', 
-//             ],
-//             borderWidth: 1,
-//             fill: false
-//         },
-//         {
-//                 label: 'Open Tickets',
-//                 data: [800, 550, 700, 600, 1100, 650, 550, 650, 850],					
-//                 backgroundColor: [
-//                     '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', 
-//                 ],
-//                 borderColor: [
-//                     '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', '#d8d8d8', 
-//                 ],
-//                 borderWidth: 1,
-//                 fill: false
-//         }
-//         ]
-//     };
-//     var supportTrackerOptions = {
-//         scales: {
-//             xAxes: [{
-//             stacked: true,
-//             barPercentage: 0.6,
-//             position: 'bottom',
-//             display: true,
-//             gridLines: {
-//                 display: false,
-//                 drawBorder: false,
-//             },
-//             ticks: {
-//                 display: true, //this will remove only the label
-//                 stepSize: 300,
-//             }
-//             }],
-//             yAxes: [{
-//                 stacked: true,
-//                 display: true,
-//                 gridLines: {
-//                     drawBorder: false,
-//                     display: true,
-//                     color: "#f0f3f6",
-//                     borderDash: [8, 4],
-//                 },
-//                 ticks: {
-//                     beginAtZero: true,
-//                     callback: function(value, index, values) {
-//                     return '$' + value;
-//                     }
-//                 },
-//             }]
-//         },
-//         legend: {
-//             display: false
-//         },
-//         legendCallback: function(chart) {
-//             var text = [];
-//             text.push('<ul class="' + chart.id + '-legend">');
-//             for (var i = 0; i < chart.data.datasets.length; i++) {
-//                 text.push('<li><span class="legend-box" style="background:' + chart.data.datasets[i].backgroundColor[i] + ';"></span><span class="legend-label text-dark">');
-//                 if (chart.data.datasets[i].label) {
-//                         text.push(chart.data.datasets[i].label);
-//                 }
-//                 text.push('</span></li>');
-//             }
-//             text.push('</ul>');
-//             return text.join("");
-//         },
-//         tooltips: {
-//             backgroundColor: 'rgba(0, 0, 0, 1)',
-//         },
-//         plugins: {
-//             datalabels: {
-//                 display: false,
-//                 align: 'center',
-//                 anchor: 'center'
-//             }
-//         }				
-//     };
-//     if ($("#supportTracker").length) {
-//         var barChartCanvas = $("#supportTracker").get(0).getContext("2d");
-//         // This will get the first returned node in the jQuery collection.
-//         var barChart = new Chart(barChartCanvas, {
-//             type: 'bar',
-//             data: supportTrackerData,
-//             options: supportTrackerOptions
-//         });
-//         document.getElementById('support-tracker-legend').innerHTML = barChart.generateLegend();
-//     }
-// }
-
-
-
 
 
       function createDailyExpenseChart (data) {
@@ -419,7 +268,7 @@ function createLoanChart () {
         labels: labels,
         datasets: [
             {
-                label: 'With Savewise',
+                label: 'Without CostCurve',
                 data: spendwiseLabels,
                 borderColor: ['rgba(255, 99, 132, 0.5)'],
                 backgroundColor: ['rgba(50,205,50, 0.5)'],
@@ -427,7 +276,7 @@ function createLoanChart () {
                 fill: true
               },
             {
-            label: 'Without SaveWise',
+            label: 'With CostCurve',
             data: datalabels,
             borderColor: ['rgba(255, 99, 132, 0.5)'],
             backgroundColor: ['rgba(255,215,0, 0.5)'],
@@ -500,172 +349,51 @@ function createLoanChart () {
     
 
 
-      var responseElt = document.getElementById("responseJSON");
-      var infoElt = document.getElementById("infoJSON");
-      var statusElt = document.getElementById("status");
       var transcriptElt = document.getElementById("query");
-
-      var clientID = "SPcn27cka11iuXGEiGRXfg==";
-      var conversationState = null;
-      $scope.voiceRequest = null;
-
-      var recorder = new Houndify.AudioRecorder();
-      recorder.on('start', function() { 
-          console.log('starting recorder'); 
-        //Initialize VoiceRequest
-        $scope.voiceRequest = $scope.initVoiceRequest(recorder.sampleRate);
-        // document.getElementById("voiceIcon").className = "selected radio icon big red";
-      });
-
-      recorder.on('data', function(data) {
-          console.log('writing data')
-          $scope.voiceRequest.write(data);
-      });
-
-      recorder.on('end', function() {
-        $scope.voiceRequest.end();
-        // statusElt.innerText = "Stopped recording. Waiting for response...";
-        console.log('stopped recording waiting for response');
-      });
-
-      recorder.on('error', function(error) {
-        $scope.voiceRequest.abort();
-        // statusElt.innerText = "Error: " + error;
-        console.log('got error', error);
-      });
       
+      var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      var recognition = new SpeechRecognition();
 
-      $scope.initVoiceRequest = function (sampleRate) {
-          console.log('1');
-        // responseElt.parentNode.hidden = true;
-        // infoElt.parentNode.hidden = true;
-        
-        var voiceRequest = new Houndify.VoiceRequest({
-          //Your Houndify Client ID
-          clientId: "SPcn27cka11iuXGEiGRXfg==",
-
-          //For testing environment you might want to authenticate on frontend without Node.js server. 
-          //In that case you may pass in your Houndify Client Key instead of "authURL".
-          clientKey: "ZzwvFaJT0FtxgeUYw5C2ZTL043dSlH8vO5p0DbVf0ehp0L3jxtZjXMTGQZn8UZvnodaTo7bPP0g5-gnG4Ui3rw==",
-
-          //Otherwise you need to create an endpoint on your server
-          //for handling the authentication.
-          //See SDK's server-side method HoundifyExpress.createAuthenticationHandler().
-        //   authURL: "/houndifyAuth",
-
-          //REQUEST INFO JSON
-          //See https://houndify.com/reference/RequestInfo
-          requestInfo: { 
-            UserID: "test_user",
-            Latitude: 37.388309, 
-            Longitude: -121.973968
-          },
-
-          //Pass the current ConversationState stored from previous queries
-          //See https://www.houndify.com/docs#conversation-state
-          conversationState: conversationState,
-
-          //Sample rate of input audio
-          sampleRate: sampleRate,
-
-          //Enable Voice Activity Detection
-          //Default: true
-          enableVAD: true,
-          
-          //Partial transcript, response and error handlers
-          onTranscriptionUpdate: onTranscriptionUpdate,
-          onResponse: function(response, info) {
-            console.log('2');
-            recorder.stop();
-            console.log('3');
-            onResponse(response, info);
-          },
-          onError: function(err, info) {
-            recorder.stop();
-            onError(err, info);
-          }
-        });
-
-        return voiceRequest;
+      recognition.onstart = function() {
+        console.log('Voice recognition started. Try speaking into the microphone.');
       }
 
+      recognition.onspeechend = function() {
+        console.log('You were quiet for a while so voice recognition turned itself off.');
+      }
+
+      recognition.onerror = function(event) {
+        if(event.error == 'no-speech') {
+          console.log('No speech was detected. Try again.');
+        }
+      }
+
+      recognition.onresult = function(event) {
+        var current = event.resultIndex;
+        var transcript = event.results[current][0].transcript;
+        transcriptElt.value = transcript;
+        console.log('Transcript: ', transcript);
+
+
+        $http.get('https://127.0.0.1:8010/?inputmessage=' + encodeURIComponent(transcript))
+        .then(function(response) {
+            $scope.AIHoundifyResponse = response.data;
+            console.log("here is GENAI response", response, $scope.AIHoundifyResponse)
+        });
+
+
+
+        
+      }
 
       $scope.onMicrophoneClick = function () {
-        if (recorder && recorder.isRecording()) {
-          recorder.stop();
+        if (recognition && recognition.recognizing) {
+          recognition.stop();
           return;
         }
 
-        recorder.start();
-
-        // statusElt.innerText = "Streaming voice request...";
-        // document.getElementById("voiceIcon").className = "loading circle notched icon big";
-        // document.getElementById("textSearchButton").disabled = true;
+        recognition.start();
         document.getElementById("query").readOnly = true;  
-      }
-
-      function onFileUpload() {
-        var reader = new FileReader();
-        reader.onload = function() {  
-          //In browsers only you can also upload and decode 
-          //audio file using decodeArrayBuffer() method
-          //Stream 8/16 kHz mono 16-bit little-endian PCM samples 
-          //in Int16Array() chunks to backend
-          var arrayBuffer = reader.result;
-          Houndify.decodeAudioData(arrayBuffer, function(err, result) {
-            statusElt.innerText = "Streaming audio from file...";
-            voiceRequest = initVoiceRequest(result.sampleRate);
-            voiceRequest.write(result.audioData);
-            voiceRequest.end();
-          });
-
-          statusElt.innerText = "Decoding audio from file...";
-        };
-
-        var file = document.getElementById("file").files[0];
-        reader.readAsArrayBuffer(file);
-      }
-
-
-      //Fires after server responds with Response JSON
-      //Info object contains useful information about the completed request
-      //See https://houndify.com/reference/HoundServer
-      function onResponse(response, info) {
-        if (response.AllResults && response.AllResults.length) {
-          //Pick and store appropriate ConversationState from the results. 
-          //This example takes the default one from the first result.
-          conversationState = response.AllResults[0].ConversationState;
-          console.log('7', response.AllResults[0].SpokenResponse);
-          $scope.AIHoundifyResponse = response.AllResults[0].SpokenResponse;
-        //   var speech = new SpeechSynthesisUtterance($scope.AIHoundifyResponse);
-        //   var voices = window.speechSynthesis.getVoices();
-        //   speech.voice = voices[40];
-        //   window.speechSynthesis.speak(speech);
-         
-           window.speechSynthesis.speak(new SpeechSynthesisUtterance($scope.AIHoundifyResponse));
-          $scope.$apply();
-        }
-        console.log('4');
-        // statusElt.innerText = "Received response.";
-        // responseElt.parentNode.hidden = false;
-        // responseElt.value = response.stringify(undefined, 2);
-        // infoElt.parentNode.hidden = false;
-        // infoElt.value = JSON.stringify(info, undefined, 2);
-      }
-
-      //Fires if error occurs during the request
-      function onError(err, info) {
-        // statusElt.innerText = "Error: " + JSON.stringify(err);
-        // responseElt.parentNode.hidden = true;
-        // infoElt.parentNode.hidden = false;
-        // infoElt.value = JSON.stringify(info, undefined, 2);
-      }
-
-      //Fires every time backend sends a speech-to-text 
-      //transcript of a voice query
-      //See https://houndify.com/reference/HoundPartialTranscript
-      function onTranscriptionUpdate(transcript) {
-        transcriptElt.value = transcript.PartialTranscript;
       }
 
       
@@ -683,6 +411,8 @@ function createLoanChart () {
         $scope.getSavings(); 
         $scope.savingsRecommendationsTable();
         $scope.mockSavingsRecommendationsTable();
+        $scope.getItemList();
+        $scope.itemSelected("Butter Chicken")
             
 
 
@@ -697,8 +427,6 @@ function createLoanChart () {
             // console.log('1', data)
             console.log('Loan Data', data, $scope.loanData);
             $scope.loanData  = data.Predicted_Delta_Margin;
-
-            createLoanChart()
           
             // createLoanChart(data);
             }).error(function (data, status) {
@@ -706,20 +434,107 @@ function createLoanChart () {
            })
     }
 
-    // $scope.getLoanInfo = function() {
-    //     var mockLoanData = {
-    //         "loan_info": {
-    //             "origination_principal_amount": 5000,
-    //             "guarantor": "Bank of America",
-    //             "next_payment_due_date": "2022-12-01"
-    //         },
-    //         "details": "Loan details"
-    //     };
-    //     $scope.loanData = mockLoanData;
-    //     console.log('Mock Loan Data', mockLoanData, $scope.loanData);
-    //     createLoanChart(mockLoanData);
+    $scope.getItemList = function() {
+        var itemsList = [
+              "Gulab Jamun",
+              "Chole Bhature",
+              "Biryani",
+              "Butter Chicken",
+              "Paneer Tikka",
+              "Rogan Josh",
+              "Samosa",
+              "Palak Paneer",
+              "Masala Dosa",
+              "Tandoori Chicken"
+          ]
+        $scope.itemsList = itemsList;
+        console.log('Mock item Data', $scope.itemsList);
+    }
+
+    // $scope.itemSelected = function(selectedItem) {
+    //     console.log('User selected item: ', selectedItem);
+
+    //     var currentDate = new Date();
+    //     var pricingData = [];
+    //     for (var i = 0; i < 12; i++) {
+    //         var monthAhead = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+    //         var formattedDate = monthAhead.getFullYear() + '-' + (monthAhead.getMonth() + 1) + '-' + monthAhead.getDate();
+    //         var data = {
+    //             "item_name": selectedItem,
+    //             "date": formattedDate
+    //         };
+
+    //         console.log("here is the DATA", data)
+    //         $http.post('https://c880-71-212-16-67.ngrok-free.app/predict', data, {
+    //           headers: {
+    //               'Content-Type': 'application/json'
+    //           }
+    //       })
+    //         .success(function (response) {
+    //             pricingData.push(response);
+    //         })
+    //         .error(function (error) {
+    //             console.log('Error: ' + error);
+    //         });
+    //     }
+    //     console.log('Pricing Data: ', pricingData);
+
+    //     createLoanChart()
+
     // }
 
+        $scope.itemSelected = function(selectedItem) {
+        console.log('User selected item: ', selectedItem);
+
+        var currentDate = new Date();
+        var pricingData = [];
+        // for (var i = 0; i < 12; i++) {
+        //     var monthAhead = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+        //     var formattedDate = monthAhead.getFullYear() + '-' + (monthAhead.getMonth() + 1) + '-' + monthAhead.getDate();
+        //     var data = {
+        //         "item_name": selectedItem,
+        //         "date": formattedDate
+        //     };
+        //   }
+
+            var mockData = {
+              current_liabilities: [
+                {date: '2022-10-01', amount:0},
+                  {date: '2022-11-01', amount: 15},
+                  {date: '2022-12-01', amount: 15},
+                  {date: '2023-01-01', amount: 15},
+                  {date: '2023-02-01', amount: 15},
+                  {date: '2023-03-01', amount: 15},
+                  {date: '2023-04-01', amount: 15},
+                  {date: '2023-05-01', amount: 15},
+                  {date: '2023-06-01', amount: 15},
+                  {date: '2023-07-01', amount: 15},
+                  {date: '2023-08-01', amount: 15},
+                  {date: '2023-09-01', amount: 15},
+                  {date: '2023-10-01', amount: 15}
+                ],
+              reduced_liabilities: [
+                {date: '2022-10-01', amount: 0},
+                {date: '2022-11-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2022-12-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-01-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-02-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-03-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-04-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-05-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-06-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-07-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-08-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-09-01', amount: Math.floor(Math.random() * 11) + 15},
+                {date: '2023-10-01', amount: Math.floor(Math.random() * 11) + 15}
+              ]
+          }
+
+        console.log('Pricing Data: ', mockData);
+
+        createLoanChart(mockData)
+
+    }
 
     $scope.getSavings = function() {
         $http.get('https://cost-curve-ss54heax2q-uc.a.run.app/totalSavings')
@@ -735,7 +550,7 @@ function createLoanChart () {
 
     // $scope.getSavings = function() {
     //     var mockSavingsData = {
-    //         "savings_info": {
+    //         "savings_info": {+
     //             "total_savings": 10000,
     //             "monthly_savings": 500,
     //             "daily_savings": 20
@@ -972,7 +787,7 @@ function createLoanChart () {
     $scope.search = function(string) {
         $scope.searchResults = {};
         console.log ("string to search for is", string);
-        var endpoint = 'http://sbe.soundsearch.io';
+        var endpoint = 'https://sbe.soundsearch.io';
         $http(
             {
                method: 'Get',
@@ -1236,7 +1051,7 @@ function ($scope, $stateParams, backend, notifier,$http) {
 
     console.log('here is the stateparams', $stateParams);
     var update = () => {
-        var endpoint = 'http://sbe.soundsearch.io';
+        var endpoint = 'https://sbe.soundsearch.io';
         $http(
             {
                method: 'Get',
