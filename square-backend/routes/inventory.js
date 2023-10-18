@@ -1,23 +1,15 @@
 const express = require('express');
-var router = express.Router();
+const router = express.Router();
 const crypto = require('crypto');
 const { Client, Environment } = require('square');
 
-// Updates inventory based on cart
+// Function to update inventory based on item recommendations
 async function updateInventory(client, location, itemIds, fromState, toState) {
-    console.log(itemIds);
-    console.log('Updating inventory');
     const { inventoryApi } = client;
     const date = new Date();
-
     let batchUpdate = {
         idempotencyKey: crypto.randomUUID(),
-        changes: [],
-    };
-
-    // Get each update to process in batch
-    for (const itemId of itemIds) {
-        const updateItem = {
+        changes: itemIds.map(itemId => ({
             type: 'ADJUSTMENT',
             adjustment: {
                 fromState: fromState,
@@ -25,71 +17,42 @@ async function updateInventory(client, location, itemIds, fromState, toState) {
                 locationId: location,
                 catalogObjectId: itemId.id,
                 quantity: String(itemId.quantity),
-                occurredAt: date.toISOString(), // RFC-3339 timestamp
+                occurredAt: date.toISOString(),
             },
-        };
-
-        batchUpdate.changes.push(updateItem); // Add item to batch
-    }
-
-    // Update inventory
+        })),
+    };
     const response = await inventoryApi.batchChangeInventory(batchUpdate);
     if (response.errors) throw response.errors;
-
-    console.log('Inventory updated');
     return response;
 }
 
-// Gets items into item ids
+// Function to process items into item ids
 async function processItems(client, items) {
-    console.log('Processing Items');
     const { catalogApi } = client;
-    let itemIds = [];
-
-    for (const item of items) {
-        // Search for each item in catalog and get id of ITEM_VARIATION
-        const filter = {
-            textFilter: item.id,
-        };
-
+    let itemIds = await Promise.all(items.map(async item => {
+        const filter = { textFilter: item.id };
         const searchResponse = await catalogApi.searchCatalogItems(filter);
-
-        itemIds.push({ id: searchResponse.result.items[0].itemData.variations[0].id, quantity: item.quantity }); // gets the item id from response
-    }
-
+        return { id: searchResponse.result.items[0].itemData.variations[0].id, quantity: item.quantity };
+    }));
     return itemIds;
 }
 
-// Update the inventory of an item
-// req in the form of {fromState: 'STATE', toState: 'STATE', items: [{id: 'name', quantity: stock}]}
-// STATE is either NONE | SOLD | IN_STOCK
+// Route to update the inventory of an item
 router.post('/', async function (req, res) {
     const client = new Client({
         accessToken: process.env.SQUARE_ACCESS_TOKEN,
         environment: Environment.Sandbox,
     });
     const location = process.env.SQUARE_LOCATION_ID;
-    const fromState = req.body.fromState;
-    const toState = req.body.toState;
-    const item = req.body.items;
-
-    console.log('Attmpting to update inventory');
+    const { fromState, toState, items } = req.body;
     try {
-        const itemId = await processItems(client, [item]);
-        await updateInventory(client, location, itemId, fromState, toState);
+        const itemIds = await processItems(client, items);
+        await updateInventory(client, location, itemIds, fromState, toState);
+        res.sendStatus(200);
     } catch (err) {
-        console.log('Inventory Error');
-        console.log(err);
+        console.error('Error updating inventory', err);
         res.sendStatus(500);
-        return;
     }
-
-    res.sendStatus(200);
 });
-
-// // Get the current inventory status of each item
-// router.get('/', async function (req, res) {
-//     res.sendStatus(404);
-// });
 
 module.exports = router;

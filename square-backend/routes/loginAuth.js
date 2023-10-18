@@ -1,36 +1,31 @@
-var express = require('express');
-var users = require('../data/users');
-var models = require('../data/models');
-var router = express.Router();
+const express = require('express');
+const users = require('../data/users');
+const models = require('../data/models');
+const router = express.Router();
 
-// req in the form {store: 'store name', password: 'password'}
-// Returns true if accepted feel free to change this
+// Request format: {store: 'store name', password: 'password'}
+// Returns true if credentials are valid. Feel free to modify this.
 router.post('/', async function (req, res) {
-    const storeName = req.body.store;
-    const password = req.body.password;
+    const { store: storeName, password } = req.body;
     const allUsers = await users.getAllUsers();
 
-    // Search for store
-    for (const user of allUsers) {
-        if (user.name === storeName) {
-            if (user.pass === password) {
-                let storeInfo = undefined;
-                try {
-                    const model = await models.getModelById(user._id);
-                    storeInfo = { ...user };
-                    storeInfo.artifactOutputUri = model.artifactOutputUri;
-                } catch (err) {
-                    console.log('Model is not defined for this store');
-                    storeInfo = { ...user };
-                }
+    // Find the store
+    const user = allUsers.find(user => user.name === storeName && user.pass === password);
 
-                res.status(200).json(storeInfo);
-                return;
-            }
+    if (user) {
+        let storeInfo;
+        try {
+            const model = await models.getModelById(user._id);
+            storeInfo = { ...user, artifactOutputUri: model.artifactOutputUri };
+        } catch (err) {
+            console.log('No model defined for this store');
+            storeInfo = { ...user };
         }
+
+        return res.status(200).json(storeInfo);
     }
 
-    res.status(400).json({ error: 'Store not found' });
+    return res.status(400).json({ error: 'Store not found' });
 });
 
 module.exports = router;
