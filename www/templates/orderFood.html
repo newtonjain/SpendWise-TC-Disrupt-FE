@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <style>
+        .item { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div id="cart">
+        <script>
+            var items = [
+                { name: 'Pizza', price: 0 },
+                { name: 'Burger', price: 0 },
+                { name: 'Pasta', price: 0 }
+            ];
+
+            var cart = document.getElementById('cart');
+
+            items.forEach(function(item) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://cost-curve-ss54heax2q-uc.a.run.app/getPrice/' + item.name, true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        item.price = JSON.parse(xhr.responseText).cost;
+                        var div = document.createElement('div');
+                        div.className = 'item';
+                        div.textContent = item.name + ' - $' + item.price;
+                        cart.appendChild(div);
+                    } else {
+                        console.error('Error fetching cost for item: ' + item.name + ', Status: ' + xhr.status);
+                    }
+                };
+                xhr.send();
+            });
+        </script>
+    </div>
+    <button id="checkout">Checkout</button>
+    <div id="bill">
+        <script>
+            document.getElementById('checkout').addEventListener('click', function() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://cost-curve-ss54heax2q-uc.a.run.app/totalBill', true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var totalBill = JSON.parse(xhr.responseText).total;
+                        bill.textContent = 'Total: $' + totalBill;
+                    } else {
+                        console.error('Error fetching total bill: ' + xhr.status);
+                    }
+                };
+                xhr.send();
+            });
+        </script>
+    </div>
+
+    <script>
+        var items = [
+            { name: 'Pizza', price: 10 },
+            { name: 'Burger', price: 5 },
+            { name: 'Pasta', price: 8 }
+        ];
+
+        var cart = document.getElementById('cart');
+        var bill = document.getElementById('bill');
+
+        items.forEach(function(item) {
+            var div = document.createElement('div');
+            div.className = 'item';
+            div.textContent = item.name + ' - $' + item.price;
+            cart.appendChild(div);
+        });
+
+        document.getElementById('checkout').addEventListener('click', function() {
+            var total = items.reduce(function(sum, item) {
+                return sum + item.price;
+            }, 0);
+            bill.textContent = 'Total: $' + total;
+        });
+    </script>
+    <button id="makePayment">Make Payment</button>
+    <script>
+        document.getElementById('makePayment').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://cost-curve-ss54heax2q-uc.a.run.app/makePayment', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var paymentStatus = JSON.parse(xhr.responseText).status;
+                    if (paymentStatus === 'success') {
+                        alert('Payment successful!');
+                    } else {
+                        alert('Payment failed: ' + paymentStatus);
+                    }
+                } else {
+                    console.error('Error making payment: ' + xhr.status);
+                }
+            };
+            xhr.send();
+        });
+    </script>
+</body>
+</html>
+
